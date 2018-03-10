@@ -1,3 +1,7 @@
+Titles:
+On the inference-prediction dilemma in biomedicine
+
+
 Main conclusions
 1) across simulations, inference/GLM tends to yield more false positives, while prediction yielded more false negatives (coherent with the parsimony constraint)
 2) 
@@ -28,13 +32,13 @@ We looked for both additive effects which can be seen as the combined effect pro
 
 
 
-Bertrand:
+Bertrand March 9:
 - random forests -> feature importance
 - applications: cross-correlations -> significance is divided between the variables -> more difficult for each individual variable to be significant
 - shrinkage ~ few variables
 - forward step-wise selection: faisable
 - SNR: L2(X_beta) / L2(epsilon) -> ratio more informative
-- Lasso: does shrinkage AND selction -> difficult to separate
+- Lasso: does shrinkage AND selction -> difficult to separate -> once the non-zero betas are set, one could refit an OLS bsed on the subset of identified betas for evaluation out of sample because this would allow to separate shrinkage and selection in the evaluation of an out-of-sample performance
 - 100 samples, 40 variables, error = none -> we should still have 5% false positives
 - is monotony preserved or not ?
 - post-selection inference does not really work and the solutions from Stanford should not be really trusted
@@ -43,6 +47,7 @@ Bertrand:
 - a fundamemntal issue is that significance and variable selectio are *binary* metrics, while the process and the underlying coputation is actually continuous in nature
 -> OLS/inference has literally no researchers degrees of free <=> but there are naturally so many more researchers degrees of freedom when computing Lasso, CV, and choosing the lambda
 -> the simulations are less convincing than the applications to the real datasets: you should understand the these data better (SNR can be computed even if the ground truth model is not known + quantify the correlation between the inputs by cross-correlation plots)
+-> compare to random forests feature importances because these do not have shrinkage effects
 
 
 
@@ -55,9 +60,6 @@ Mini-mental / CamCAN
 Prostata dataset
 
 
-
-Titles:
-The inference-prediction dilemma in biomedicine
 
 
 Target journals:

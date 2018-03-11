@@ -3,8 +3,12 @@ On the inference-prediction dilemma in biomedicine
 
 
 Main conclusions
-1) across simulations, inference/GLM tends to yield more false positives, while prediction yielded more false negatives (coherent with the parsimony constraint)
-2) 
+1) across simulations and applications, inference/GLM tends to yield more false positives, while prediction yielded more false negatives (coherent with the parsimony constraint of the Lasso)
+2) all four possible cases occur in practice:
+  * significant and predictive
+  * significant but not predictive
+  * not significant but predictive
+  * not significant and not predictive
 
 
 
@@ -43,13 +47,18 @@ Bertrand March 9:
 - is monotony preserved or not ?
 - post-selection inference does not really work and the solutions from Stanford should not be really trusted
 - perturbation: I would apply that to Y rather than specific input variables
-- your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% natural setting
+- your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% naturalistic setting
 - a fundamemntal issue is that significance and variable selectio are *binary* metrics, while the process and the underlying coputation is actually continuous in nature
 -> OLS/inference has literally no researchers degrees of free <=> but there are naturally so many more researchers degrees of freedom when computing Lasso, CV, and choosing the lambda
 -> the simulations are less convincing than the applications to the real datasets: you should understand the these data better (SNR can be computed even if the ground truth model is not known + quantify the correlation between the inputs by cross-correlation plots)
 -> compare to random forests feature importances because these do not have shrinkage effects
 
 
+
+
+
+Daniel Margulies March 11:
+- significant variables are not automatically predictive? Why not? That is wierd?
 
 
 

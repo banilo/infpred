@@ -1,5 +1,5 @@
 TODO:
-- forward-stepwise selection can do seletion without prediction -> but solution is not unique
+- forward-stepwise selection can do seletion based on p-values without prediction -> but solution is not unique
 
 
 
@@ -67,6 +67,19 @@ Bertrand March 9:
 
 Daniel Margulies March 11:
 - significant variables are not automatically predictive? Why not? That is wierd?
+
+
+
+Discussion with Olivier March 12:
+- "forward"-variant of RFE with RF
+- Partial dependence plots on variables suspected to have non-linear 
+- true vs predicted / plot avec OLS and optimal Lasso and RF
+- RF better than Lasso -> indicators of non-linearity
+- MAD is more interpretable
+- polynomial expansion -> feature selection f_regression -> test
+- parameter search with gradient boosting
+
+
 
 
 

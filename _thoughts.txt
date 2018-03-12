@@ -1,3 +1,11 @@
+TODO:
+- forward-stepwise selection can do seletion without prediction -> but solution is not unique
+
+
+
+
+
+
 Titles:
 On the inference-prediction dilemma in biomedicine
 

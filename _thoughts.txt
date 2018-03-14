@@ -1,7 +1,6 @@
 TODO:
-- forward-stepwise selection can do seletion based on p-values without prediction -> but solution is not unique
-
-
+- Jerome: try a non-Gaussian (=pathological) error term
+- Lasso/plot: show vertical of automatically selected model
 
 
 
@@ -17,6 +16,14 @@ Main conclusions
   * significant but not predictive
   * not significant but predictive
   * not significant and not predictive
+3) Efron & Tibshirani 1993: Statististcians work at the intersection of empirical research,
+science, and philosophy -> this project tried to emphasize the importance of the philsophical
+component of medical research activity. Just because the methods that we use automatically
+generate results does not preclude the necessity of questioning the obtained results and
+conclusions; just because a tool gives answsers, does not mean that the tool has been an
+appropriate choice for the underlying research question
+
+
 
 
 
@@ -87,8 +94,6 @@ Applications:
 Mini-mental / CamCAN
 / HCP
 / UKBB
-Prostata dataset
-
 
 
 

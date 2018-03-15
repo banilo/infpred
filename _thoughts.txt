@@ -1,7 +1,12 @@
 TODO:
 - Jerome: try a non-Gaussian (=pathological) error term
 - Lasso/plot: show vertical of automatically selected model
+- classification: balanced accuracy
 
+
+1. FEV - prediction ignores the significant ones
+2. birth weight -
+3. Prostate - not significant but predictive
 
 
 
@@ -97,7 +102,8 @@ Discussion with Olivier March 12:
 
 
 Discussion with Gael:
-- 
+- first selected variable in fwd stepwise and Lasso is expectedly the same, because there they are selected marginally; since there is not other potetnial in the model yet -> then bias of L1 will increase in the sense of bias/variance tradeoff
+- prediction: the point is this: Do I bring in new information to solve my prediction problem or not? So this is related to the ground truth correlation structure of the input features
 
 
 

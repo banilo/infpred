@@ -104,7 +104,7 @@ Discussion with Olivier March 12:
 Discussion with Gael:
 - first selected variable in fwd stepwise and Lasso is expectedly the same, because there they are selected marginally; since there is not other potetnial in the model yet -> then bias of L1 will increase in the sense of bias/variance tradeoff
 - prediction: the point is this: Do I bring in new information to solve my prediction problem or not? So this is related to the ground truth correlation structure of the input features
-
+- let's write the paper in GDocs please, this is the most practical for me
 
 
 

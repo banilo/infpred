@@ -4,9 +4,11 @@ TODO:
 - classification: balanced accuracy
 
 
+
 1. FEV - prediction ignores the significant ones
 2. birth weight -
 3. Prostate - not significant but predictive
+-> leave simulations + classification for the exectuable notebooks only?
 
 
 
@@ -36,7 +38,7 @@ Discussion:
 
 - vocabulary/expressions: we are in the usual linear regression setup; the selection event; 
 
-- biggest abberations between prediction and inferenace when a) the assumed model did not correspond to the ground-throuth process that generated the data and b) correlation between the input variables -> however, this was likely to be the most realistic simulation in medicine, neuroscience, and genetics where we have complex biology-phenotype interactions that are unlikely to correspond to the linear GLM models that we use in everyday work
+- biggest abberations between prediction and inference when a) the assumed model did not correspond to the ground-throuth process that generated the data and b) correlation between the input variables -> however, this was likely to be the most realistic simulation in medicine, neuroscience, and genetics where we have complex biology-phenotype interactions that are unlikely to correspond to the linear GLM models that we use in everyday work
 
 - potentially related to the discussion of whether pvales for prediction performances make sense: cf. Evernote on pvalues in DNNs
 
@@ -49,7 +51,7 @@ Discussion with Olivier March 8:
 
 - our goal is different from post-selection inference: In post-sel inf we have already gone through a filter process, whether it be least-angle regression or PCA or Lasso, after which we want to know among the chosen subset of variables which are *also* significant
 
-- The most common case in biomedicine is plrobably that the assumed linear model is wrong and does not correspond to the real data mechanisms of how the observations arose. In genetics for example, using logistic-regression-like GWAS analyses we can often only explain very small fractions of the variance related to the disease phenotype in psychiatry and other complex dieases:
+- "modelling error" (vs. "measurement error"): The most common case in biomedicine is probably that the assumed linear model is wrong and does not correspond to the real data mechanisms of how the observations arose. In genetics for example, using logistic-regression-like GWAS analyses we can often only explain very small fractions of the variance related to the disease phenotype in psychiatry and other complex dieases:
 
 We looked for both additive effects which can be seen as the combined effect produced by different symptoms on schizophrenia severity is equal to the sum of their separate effect and interaction effects which mean that the combined effect is not additive. In fact, it is widely assumed that higher-order interactions between vulnerabilities triggered by the environment such as growing up in an urbanized area (Van Os and Kapur, 2009) and vulnerabilities conferred by genes such as NRG1 (Harrison and Weinberger, 2005) are important in the etiology of schizophrenia and may result in this major psychiatric disorder (Van Os and Kapur, 2009). Nonetheless, the very successful genome-wide association studies (GWAS) have been mostly grounded in additive models and thus blind to such interaction effects. In other words, common GWAS applications investigate the separate effect of each individual gene on overall disease vulnerability.
 
@@ -60,17 +62,17 @@ Bertrand March 9:
 - random forests -> feature importance
 - applications: cross-correlations -> significance is divided between the variables -> more difficult for each individual variable to be significant
 - shrinkage ~ few variables
-- forward step-wise selection: faisable
+- forward step-wise selection for selection based on p-value (instead of prediction): faisable
 - SNR: L2(X_beta) / L2(epsilon) -> ratio more informative
-- Lasso: does shrinkage AND selction -> difficult to separate -> once the non-zero betas are set, one could refit an OLS bsed on the subset of identified betas for evaluation out of sample because this would allow to separate shrinkage and selection in the evaluation of an out-of-sample performance
+- Lasso: does shrinkage AND selction -> difficult to separate -> once the non-zero betas are set, one could refit an OLS bsed on the subset of identified betas for evaluation out of sample because this would allow to separate/disembiguate/disentangle shrinkage and selection in the evaluation of an out-of-sample performance
 - 100 samples, 40 variables, error = none -> we should still have 5% false positives
-- is monotony preserved or not ?
+- aberration by pertubration is weak vs strong condiction on: monotony preserved or not ?
 - post-selection inference does not really work and the solutions from Stanford should not be really trusted
-- perturbation: I would apply that to Y rather than specific input variables
+- perturbation: I would apply that to Y rather than specific input variables [In sklearn example: perturbation is however also applied to X directly]
 - your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% naturalistic setting
-- a fundamemntal issue is that significance and variable selectio are *binary* metrics, while the process and the underlying coputation is actually continuous in nature
--> OLS/inference has literally no researchers degrees of free <=> but there are naturally so many more researchers degrees of freedom when computing Lasso, CV, and choosing the lambda
--> the simulations are less convincing than the applications to the real datasets: you should understand the these data better (SNR can be computed even if the ground truth model is not known + quantify the correlation between the inputs by cross-correlation plots)
+- a fundamemntal issue is that significance and variable selection are *binary* metrics, while the process and the underlying computation is actually continuous in nature
+-> OLS/inference has literally no researchers degrees of freedom <=> but there are naturally so many more researchers degrees of freedom when computing Lasso, CV, and choosing the lambda
+-> the simulations are less convincing than the applications to the real datasets: you should understand the real data better (SNR can be computed even if the ground truth model is not known + quantify the correlation between the inputs by cross-correlation plots)
 -> compare to random forests feature importances because these do not have shrinkage effects
 
 

@@ -2,6 +2,8 @@ TODO:
 - Jerome: try a non-Gaussian (=pathological) error term
 - Lasso/plot: show vertical of automatically selected model
 - classification: balanced accuracy
+- do ypredicted versus ytrue 45 degree plots on particular examples
+- compute+plot also out-of-sample prediction performance for the linear regression
 
 
 

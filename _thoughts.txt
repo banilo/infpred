@@ -32,6 +32,8 @@ generate results does not preclude the necessity of questioning the obtained res
 conclusions; just because a tool gives answsers, does not mean that the tool has been an
 appropriate choice for the underlying research question
 
+-> "Modeling for prediction and modeling for inference ask research questions in importantly different ways."
+
 
 
 
@@ -113,9 +115,9 @@ Discussion with Gael:
 
 
 
-
-
-
+Discussion with Denis:
+- invent and popularize the "inference-prediction plot"
+- 
 
 
 

@@ -47,6 +47,8 @@ Interesting points from the literature:
 -keyword: reproducibility
 --ASA:  Statistical significance is not equivalent to scientific, human, or economic significance. Smaller p-values do not necessarily imply the presence of larger or more important effects, and larger p- values do not imply a lack of importance or even lack of effect. Any effect, no matter how tiny, can produce a small p-value if the sample size or measurement precision is high enough, and large effects may produce unimpressive p-values if the sample size is small or measurements are imprecise. Similarly, identical estimated effects will have different p-values if the precision of the estimates differs.
 -ASA: "No single index should substitute for scientific reasoning."
+-Gelman: "really, any p-value) can be viewed as a crude measure of sample size, and this can be framed as the distinction between"
+-ASA/Briggs: "A prime reason p-values were embraced was that they made automatic, universal decisions about whether to “drop” variables or to keep them (in a given model schema). But probability is not decision; p-values con ated the concepts. ...  Since decision is relative there is thus no universal solution to variable selection"
 
 
 
@@ -134,6 +136,13 @@ Discussion with Denis:
 - 
 
 
+
+Discussion with Demian:
+- The Achilles heel is: any variable significant variable will also be predictive
+-> we need to show case where not predictive but strongly significant ("hoechstsignifikant")
+- The whole inf-versus-pred problem goes away when we deal with a very strong effect
+-> but in these scenario we probably do not need statistics to observe the effect
+- we should consider making the -log(p) axis rigid to increase comparability
 
 
 

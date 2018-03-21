@@ -36,6 +36,20 @@ appropriate choice for the underlying research question
 
 
 
+Interesting points from the literature:
+- Breiman: " “Importance” does not yet have a satisfactory the- oretical definition (I haven’t been able to locate the article Brad references but I’ll keep looking). It depends on the dependencies between the output variable and the input variables, and on the depen- dencies between the input variables. The problem begs for research.
+"
+- „What meaning can one give to statements that “variable X is important or not impor- tant.” This has puzzled me on and off for quite a while… variable importance has always been defined operationally.  My definition of variable importance is based on prediction. A variable might be considered important if deleting it seriously affects prediction accuracy.
+-From clinical trials to epidemiology, p-values have long been used to back claims for the discovery of real e ects amid noisy data.
+-Many journalists spotted the obvious connection between the unreliability of p-values and one of the biggest scienti c controversies of our time: the replication crisis,
+-as Wasserstein has put it, to “steer research into a post p < 0.05 era”. 
+-prediction is causin of ifnerence, not a brother or sister -> inference is a differently nuanced alternative
+-keyword: reproducibility
+--ASA:  Statistical significance is not equivalent to scientific, human, or economic significance. Smaller p-values do not necessarily imply the presence of larger or more important effects, and larger p- values do not imply a lack of importance or even lack of effect. Any effect, no matter how tiny, can produce a small p-value if the sample size or measurement precision is high enough, and large effects may produce unimpressive p-values if the sample size is small or measurements are imprecise. Similarly, identical estimated effects will have different p-values if the precision of the estimates differs.
+-ASA: "No single index should substitute for scientific reasoning."
+
+
+
 
 
 Discussion:

@@ -49,7 +49,7 @@ Interesting points from the literature:
 -ASA: "No single index should substitute for scientific reasoning."
 -Gelman: "really, any p-value) can be viewed as a crude measure of sample size, and this can be framed as the distinction between"
 -ASA/Briggs: "A prime reason p-values were embraced was that they made automatic, universal decisions about whether to “drop” variables or to keep them (in a given model schema). But probability is not decision; p-values con ated the concepts. ...  Since decision is relative there is thus no universal solution to variable selection"
-- Ioannidis:  most scientists (and in particular psychologists, biomedical scientists, social scientists, cognitive scientists and neuroscientists) are still near exclusively educated in NHST; NHST should be abandoned as the de factor cornerstone of research.
+- Ioannidis: most scientists (and in particular psychologists, biomedical scientists, social scientists, cognitive scientists and neuroscientists) are still near exclusively educated in NHST; NHST should be abandoned as the de factor cornerstone of research; It is a frequent misconception that a lower p value always means stronger evidence irrespective of the sample size and effect size;  The problem is that usually none of these alternative approaches are taught properly in statistics courses for students in psychology, neuroscience, biomedical science and social science.
 
 
 

@@ -19,7 +19,8 @@ TODO:
 
 
 Titles:
-On the inference-prediction dilemma in biomedicine
+On the prediction-inference dilemma in biomedicine
+
 
 
 Main conclusions
@@ -36,11 +37,16 @@ generate results does not preclude the necessity of questioning the obtained res
 conclusions; just because a tool gives answsers, does not mean that the tool has been an
 appropriate choice for the underlying research question
 
+- the present example is a simplified version of many current real-world settings: in the high-dimensional settings, the divergence between prediction and inference can be expected to be even bigger
+
 -> "Modeling for prediction and modeling for inference ask research questions in importantly different ways."
+-> 21st century data analysts in biomedicine should embrance both inferential and preditive modeling for their respective merits: Donoho2015
+
 
 
 
 Interesting points from the literature:
+- "The tension between machine learning and academic statistics "
 - Breiman: " “Importance” does not yet have a satisfactory the- oretical definition (I haven’t been able to locate the article Brad references but I’ll keep looking). It depends on the dependencies between the output variable and the input variables, and on the depen- dencies between the input variables. The problem begs for research.
 "
 - „What meaning can one give to statements that “variable X is important or not impor- tant.” This has puzzled me on and off for quite a while… variable importance has always been defined operationally.  My definition of variable importance is based on prediction. A variable might be considered important if deleting it seriously affects prediction accuracy.
@@ -56,6 +62,9 @@ Interesting points from the literature:
 - Ioannidis: most scientists (and in particular psychologists, biomedical scientists, social scientists, cognitive scientists and neuroscientists) are still near exclusively educated in NHST; NHST should be abandoned as the de factor cornerstone of research; It is a frequent misconception that a lower p value always means stronger evidence irrespective of the sample size and effect size;  The problem is that usually none of these alternative approaches are taught properly in statistics courses for students in psychology, neuroscience, biomedical science and social science.
 -"by construction, 10 inpendendent variables were ..."
 -Yarkoni/Westfall: research is typically evaluated based either on “goodness of fit” between the statistical model and the sample data, or on whether the sizes and directions of certain regression coefficients match what is implied by different theoretical perspectives. As we elaborate below, such demonstrations provide no guarantee of predictive accuracy for out-of- sample data; indeed, in some cases, the pursuit of theoretical parsimony can actually reduce the likelihood of generating good prediction; there is mounting evidence from the ongoing replication crisis that the published results of many papers in psychology do not, in fact, hold up when the same experiments and analyses are independently conducted at a later date; The problem lies in the inference that the parameter estimates obtained in the sample at hand—i.e., the values 𝑏( = 1.6, 𝑏# = 0.35, and 𝑏$ = 0.62—will perform comparably well when applied to other samples drawn from the same population.;  every pattern that could be observed in a given dataset reflects some (generally unknown) combination of signal and error
+-" medical research is so extensive, and the stakes are so high"
+-Donoho2015: In the future, scientific methodology will be validated empirically. Code sharing and data sharing will allow large numbers of datasets and analysis workflows to be derived from studies science-wide. These will be curated into corpora of data and of workflows. Performance of statistical and machine learning methods will thus ultimately rely on the cross-study and cross-workflow approaches 
+-“Data science has become a fourth approach to scientific discovery, in addition to experimentation, modeling, and computation,” said Provost Martha Pollack.
 
 
 
@@ -140,6 +149,7 @@ Discussion with Gael:
 Discussion with Denis:
 - invent and popularize the "inference-prediction plot"
 - 
+
 
 
 

@@ -4,6 +4,10 @@ TODO:
 - classification: balanced accuracy
 - do ypredicted versus ytrue 45 degree plots on particular examples
 - compute+plot also out-of-sample prediction performance for the linear regression
+- plot in-sample R2 OSL (goodness of fit) versus out-of-sample R2 from Lasso
+- simulations: compute effect size + true R2 + bias-variance decomposition
+- Consider in Lasso/accuracy plot: add horizontal line for OLS train+test R2 (like in Yarkoni/Westfall)
+
 
 
 
@@ -50,6 +54,8 @@ Interesting points from the literature:
 -Gelman: "really, any p-value) can be viewed as a crude measure of sample size, and this can be framed as the distinction between"
 -ASA/Briggs: "A prime reason p-values were embraced was that they made automatic, universal decisions about whether to “drop” variables or to keep them (in a given model schema). But probability is not decision; p-values con ated the concepts. ...  Since decision is relative there is thus no universal solution to variable selection"
 - Ioannidis: most scientists (and in particular psychologists, biomedical scientists, social scientists, cognitive scientists and neuroscientists) are still near exclusively educated in NHST; NHST should be abandoned as the de factor cornerstone of research; It is a frequent misconception that a lower p value always means stronger evidence irrespective of the sample size and effect size;  The problem is that usually none of these alternative approaches are taught properly in statistics courses for students in psychology, neuroscience, biomedical science and social science.
+-"by construction, 10 inpendendent variables were ..."
+-Yarkoni/Westfall: research is typically evaluated based either on “goodness of fit” between the statistical model and the sample data, or on whether the sizes and directions of certain regression coefficients match what is implied by different theoretical perspectives. As we elaborate below, such demonstrations provide no guarantee of predictive accuracy for out-of- sample data; indeed, in some cases, the pursuit of theoretical parsimony can actually reduce the likelihood of generating good prediction; there is mounting evidence from the ongoing replication crisis that the published results of many papers in psychology do not, in fact, hold up when the same experiments and analyses are independently conducted at a later date; The problem lies in the inference that the parameter estimates obtained in the sample at hand—i.e., the values 𝑏( = 1.6, 𝑏# = 0.35, and 𝑏$ = 0.62—will perform comparably well when applied to other samples drawn from the same population.;  every pattern that could be observed in a given dataset reflects some (generally unknown) combination of signal and error
 
 
 
@@ -143,6 +149,18 @@ Discussion with Demian:
 - The whole inf-versus-pred problem goes away when we deal with a very strong effect
 -> but in these scenario we probably do not need statistics to observe the effect
 - we should consider making the -log(p) axis rigid to increase comparability
+
+
+
+
+Discussion with Guillaume March 25:
+- Lasso: Why do we not delete one variable at each step? -> shirnkage + selection à la fois
+- estimation is common -> then inference or prediction in different paths of analysis
+- p-values (implicitly also effectr size) are in-sample <=> prediction is out-of-sample sample
+- !!! excellent final phrase for the conclusion: Claude Bernard (father of experimental research in medicine) / traité de la medicine experimentale; ~1865: "medicine professionelle" (no theory, practically oriented) <=> "medcin scientific" (principle, determinism absolu) => Is considered to be the founder of experimental/scientific medicine
+- CAVE Why are certain variables with a high absolute coefficient but kicked out before other variables with high absolute coefficients
+- OLS and Lasso both express the relation between inputs and outputs as Y = X1 * beta1 + X2 * beta2 -> so the model family is the same, however the goal statistcal investigation is different when using this same mathematical model
+
 
 
 

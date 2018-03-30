@@ -54,10 +54,14 @@ Interesting points from the literature:
 - "predictive variable set" <-> "significant variable set"
 - "real and well-known medical datasets"
 - "we offer some statistical insight"
+-"expose some differences between"
+-"P values and accompanyingmethods"
 - "illuminate examples"
+- "adoption of other inference tools if appropriate"
 - Efron1991: "Most scientists face problems of data analysis. What can I conclude form my data? How far can I trust the conclusions?"
 - Breiman: " “Importance” does not yet have a satisfactory the- oretical definition (I haven’t been able to locate the article Brad references but I’ll keep looking). It depends on the dependencies between the output variable and the input variables, and on the depen- dencies between the input variables. The problem begs for research.
 "
+-Ioannidis2018/JAMA: "With the advent of big data, statistical significance will increasingly mean very little because extremely low P values are routinely obtained for signals that are too small to be useful even if true."
 - „What meaning can one give to statements that “variable X is important or not impor- tant.” This has puzzled me on and off for quite a while… variable importance has always been defined operationally.  My definition of variable importance is based on prediction. A variable might be considered important if deleting it seriously affects prediction accuracy.
 -From clinical trials to epidemiology, p-values have long been used to back claims for the discovery of real e ects amid noisy data.
 -Many journalists spotted the obvious connection between the unreliability of p-values and one of the biggest scienti c controversies of our time: the replication crisis,
@@ -76,6 +80,12 @@ Interesting points from the literature:
 -“Data science has become a fourth approach to scientific discovery, in addition to experimentation, modeling, and computation,” said Provost Martha Pollack.
 
 - Lo2015: Thus far, genome-wide association studies (GWAS) have been dis- appointing in the inability of investigators to use the results of identified, statistically significant variants in complex diseases to make predictions useful for personalized medicine; We point out that this problem is prevalent in simple as well as com- plex data; higher sig- nificance cannot automatically imply stronger predictivity and il- lustrate through simulations ; "what makes vari- ables good for prediction versus significance depends on different properties of the underlying distributions"; "classical significance test-based approaches"; Real examples are more difficult because the researcher must rely on a limited number of individuals to infer the relevant distributions and the number of possible variables is huge; In fact, significance was not originally designed for the purposes of prediction; a key difference between what makes a variable highly significant versus highly predictive lies in dif- ferent properties of their underlying distributions; prediction has served more in identifying future data behavior
+-Cohen1990: " I have learned that there is no royal road to statistical induction, that the informed judgment of the investigator is the crucial element in the interpretation of data"
+  *  hypothesis testing has been greatly overemphasized in psychology and in the other disciplines that use it.
+  * In his brilliant analysis of what he called the "infer- ence revolution" in psychology, Gerd Gigerenzer showed how and why no single royal road of drawing conclusions from data is possible
+  * Skinner (1957) thought of dedicating his book Verbal Be- havior (and I quote) "to the statisticians and scientific methodologists with whose help this book would never have been completed" (p. 111)
+
+
 
 
 

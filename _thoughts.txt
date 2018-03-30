@@ -22,6 +22,9 @@ Titles:
 On the prediction-inference dilemma in biomedicine
 
 
+keywords: statistical significance | prediction | high-dimensional data | variable selection
+
+
 
 Main conclusions
 1) across simulations and applications, inference/GLM tends to yield more false positives, while prediction yielded more false negatives (coherent with the parsimony constraint of the Lasso)
@@ -40,6 +43,7 @@ appropriate choice for the underlying research question
 - the present example is a simplified version of many current real-world settings: in the high-dimensional settings, the divergence between prediction and inference can be expected to be even bigger
 
 -> "Modeling for prediction and modeling for inference ask research questions in importantly different ways."
+-> divergende is already relevant in analysis regimes with few variables
 -> 21st century data analysts in biomedicine should embrance both inferential and preditive modeling for their respective merits: Donoho2015
 
 
@@ -47,6 +51,10 @@ appropriate choice for the underlying research question
 
 Interesting points from the literature:
 - "The tension between machine learning and academic statistics "
+- "predictive variable set" <-> "significant variable set"
+- "real and well-known medical datasets"
+- "we offer some statistical insight"
+- "illuminate examples"
 - Efron1991: "Most scientists face problems of data analysis. What can I conclude form my data? How far can I trust the conclusions?"
 - Breiman: " “Importance” does not yet have a satisfactory the- oretical definition (I haven’t been able to locate the article Brad references but I’ll keep looking). It depends on the dependencies between the output variable and the input variables, and on the depen- dencies between the input variables. The problem begs for research.
 "
@@ -67,6 +75,13 @@ Interesting points from the literature:
 -Donoho2015: In the future, scientific methodology will be validated empirically. Code sharing and data sharing will allow large numbers of datasets and analysis workflows to be derived from studies science-wide. These will be curated into corpora of data and of workflows. Performance of statistical and machine learning methods will thus ultimately rely on the cross-study and cross-workflow approaches 
 -“Data science has become a fourth approach to scientific discovery, in addition to experimentation, modeling, and computation,” said Provost Martha Pollack.
 
+- Lo2015: Thus far, genome-wide association studies (GWAS) have been dis- appointing in the inability of investigators to use the results of identified, statistically significant variants in complex diseases to make predictions useful for personalized medicine; We point out that this problem is prevalent in simple as well as com- plex data; higher sig- nificance cannot automatically imply stronger predictivity and il- lustrate through simulations ; "what makes vari- ables good for prediction versus significance depends on different properties of the underlying distributions"; "classical significance test-based approaches"; Real examples are more difficult because the researcher must rely on a limited number of individuals to infer the relevant distributions and the number of possible variables is huge; In fact, significance was not originally designed for the purposes of prediction; a key difference between what makes a variable highly significant versus highly predictive lies in dif- ferent properties of their underlying distributions; prediction has served more in identifying future data behavior
+
+
+
+CAVEATS / COUNTER-ARGUMENTS:
+- One may wonder whether the shortcoming of using signifi- cance is due to the custom of using marginal significance and not taking into account the possible interaction effects of groups of variables.
+- important question is also significance-based filtering for subsequent prediction
 
 
 

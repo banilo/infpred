@@ -54,6 +54,7 @@ Interesting points from the literature:
 - "predictive variable set" <-> "significant variable set"
 - "real and well-known medical datasets"
 - "we offer some statistical insight"
+- "integrated plot"
 -"expose some differences between"
 -"P values and accompanyingmethods"
 - "illuminate examples"
@@ -84,6 +85,9 @@ Interesting points from the literature:
   *  hypothesis testing has been greatly overemphasized in psychology and in the other disciplines that use it.
   * In his brilliant analysis of what he called the "infer- ence revolution" in psychology, Gerd Gigerenzer showed how and why no single royal road of drawing conclusions from data is possible
   * Skinner (1957) thought of dedicating his book Verbal Be- havior (and I quote) "to the statisticians and scientific methodologists with whose help this book would never have been completed" (p. 111)
+
+-Hastie/Bioinf: Most statisticians prefer to assess significance in the context of multiple linear regression rather than simple linear regression. They resist this natural impulse in association studies because of the computational barriers and the mismatch between numbers of observations and predictors.; It is tempting to assign P-values by comparing the resulting likelihood ratio statistics to the percentile points of a χ2-distribution with 1 degree of freedom. This is invalid because it neglects the complex selection procedure for defining the reduced model in the first place. Nonetheless, these LOO P-values are helpful in assessing the correlations between the retained predictors in the reduced model. To avoid confusion, we will refer to the LOO P-values as LOO indices. The contrast between the univariate P-values and the LOO indices is instructive. Although both of these measures are defective and should not be taken too seriously, they are defective in different ways and together give a better idea of the truth.
+-Jakobs
 
 
 

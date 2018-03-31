@@ -138,6 +138,7 @@ Bertrand March 9:
 - aberration by pertubration is weak vs strong condiction on: monotony preserved or not ?
 - post-selection inference does not really work and the solutions from Stanford should not be really trusted
 - perturbation: I would apply that to Y rather than specific input variables [In sklearn example: perturbation is however also applied to X directly]
+- all your linear models are fitted on all inputs at the same time, so the significance is actually divided between the different input variables -> Danilo: If we do separate linear models on each coefficient we need to account for multiple comparisons
 - your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% naturalistic setting
 - a fundamemntal issue is that significance and variable selection are *binary* metrics, while the process and the underlying computation is actually continuous in nature
 -> OLS/inference has literally no researchers degrees of freedom <=> but there are naturally so many more researchers degrees of freedom when computing Lasso, CV, and choosing the lambda

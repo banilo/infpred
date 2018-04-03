@@ -52,7 +52,7 @@ epsilon_range = (0, 0.5, 1, 2, 10)
 
 correlation = tuple([
     dict(n_corr_feat=x, corr_strength=y)
-    for x in (0.1, 0.5, 1)
+    for x in (0.5, 1.0)
     for y in (0.5, 0.9)])
 
 model_violation = (None, 'abs', 'log', 'exp', 'sqrt', '1/x',
@@ -60,6 +60,7 @@ model_violation = (None, 'abs', 'log', 'exp', 'sqrt', '1/x',
 
 random_seeds = (14, 42, 86)
 C_grid = np.logspace(-3, 2, 50)
+
 iter_sim = itertools.product(
     sample_range, n_feat_range, n_feat_relevant_range,
     epsilon_range, correlation, model_violation, random_seeds)
@@ -77,8 +78,8 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
     X = rs.randn(n_samples, n_feat)
 
     # Introduce correlation:
-    if correlation is not None:
-        n_corr_feat = correlation['n_corr_feat']
+    if correlation is not None and n_feat_relevant > 1:
+        n_corr_feat = int(round(n_feat_relevant * correlation['n_corr_feat']))
         corr_strength = correlation['corr_strength']
         cov = np.ones((n_corr_feat, n_corr_feat)) * corr_strength
         cov.flat[::n_corr_feat + 1] = 1
@@ -91,11 +92,12 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
 
     # Introduce transforms that are not captured by the model.
     if model_violation is None:
-        n_viol = 1.
+        X_viol = X
     elif model_violation is not None:
         if n_feat_relevant > 0:
             n_viol = min(1, int(round(n_feat_relevant / 2)))
         else:
+            print('irrelevant scenario')
             return None  # nothing to do ... case already covered.
 
         X_viol = X.copy()
@@ -103,7 +105,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         if model_violation == 'abs':
             X_viol[:, :n_viol] = np.abs(X_viol[:, :n_viol])
         elif model_violation == 'log':
-            X_viol[:, :n_viol] = signs[:, 0:6] * np.log(
+            X_viol[:, :n_viol] = signs[:, 0:n_viol] * np.log(
                 np.abs(X_viol[:, :n_viol]))
         elif model_violation == 'sqrt':
             X_viol[:, :n_viol] = signs[:, :n_viol] * np.sqrt(
@@ -139,7 +141,8 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
     if not np.any(np.sum(coef_list == 0.)):
         C_grid_is_success = False
 
-    # Bundle results and good bye.
+    # # Bundle results and good bye.
+    print('Done')
     out = dict(
         n_samples=n_samples, n_feat=n_feat, n_feat_relevant=n_feat_relevant,
         seed=seed, lr_coefs=lr_coefs, lr_pvalues=lr_pvalues,
@@ -147,11 +150,13 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         pathology=model_violation, sim_id=sim_id,
         C_grid_is_success=C_grid_is_success)
     out.update(correlation)
-
+    out = None
     return out
 
-out = Parallel(n_jobs=8)(
+out = Parallel(n_jobs=1)(
     delayed(run_simulation)(sim_id, *params)
-    for sim_id, params in enumerate(iter_sim) if sim_id == 0)
+    for sim_id, params in enumerate(iter_sim))
 
-pd.DataFrame([oo for oo in out if oo is not None]).to_hdf('./simulations.hdf5')
+df = pd.DataFrame([oo for oo in out if oo is not None])
+
+df.to_pickle('./simulations.gzip')

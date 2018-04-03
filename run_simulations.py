@@ -47,7 +47,7 @@ def _clip_pvals(pvals):
 
 sample_range = range(100, 1000, 200)
 n_feat_range = (40,)
-n_feat_relevant_range = range(0, 40, 5)
+n_feat_relevant_range = range(1, 41, 3)
 epsilon_range = (0, 0.5, 1, 2, 10)
 
 correlation = tuple([
@@ -95,7 +95,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         X_viol = X
     elif model_violation is not None:
         if n_feat_relevant > 0:
-            n_viol = min(1, int(round(n_feat_relevant / 2)))
+            n_viol = max(1, int(round(n_feat_relevant / 2)))
         else:
             print('irrelevant scenario')
             return None  # nothing to do ... case already covered.
@@ -105,7 +105,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         if model_violation == 'abs':
             X_viol[:, :n_viol] = np.abs(X_viol[:, :n_viol])
         elif model_violation == 'log':
-            X_viol[:, :n_viol] = signs[:, 0:n_viol] * np.log(
+            X_viol[:, :n_viol] = signs[:, :n_viol] * np.log(
                 np.abs(X_viol[:, :n_viol]))
         elif model_violation == 'sqrt':
             X_viol[:, :n_viol] = signs[:, :n_viol] * np.sqrt(
@@ -113,7 +113,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         elif model_violation == 'exp':
             X_viol[:, :n_viol] = signs[:, :n_viol] * np.exp(X_viol[:, :n_viol])
         elif model_violation == '1/x':
-            X_viol = X_viol[:, :n_viol] = 1. / X_viol[:, :n_viol]
+            X_viol[:, :n_viol] = 1. / X_viol[:, :n_viol]
         elif model_violation == 'x^2':
             X_viol[:, :n_viol] **= 2
         elif model_violation == 'x^3':
@@ -150,7 +150,6 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         pathology=model_violation, sim_id=sim_id,
         C_grid_is_success=C_grid_is_success)
     out.update(correlation)
-    out = None
     return out
 
 out = Parallel(n_jobs=1)(

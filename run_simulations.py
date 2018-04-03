@@ -144,13 +144,14 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         n_samples=n_samples, n_feat=n_feat, n_feat_relevant=n_feat_relevant,
         seed=seed, lr_coefs=lr_coefs, lr_pvalues=lr_pvalues,
         coef_list=coef_list, nonzero_list=nonzero_list,
-        pathology=pathology, sim_id=sim_id,
+        pathology=model_violation, sim_id=sim_id,
         C_grid_is_success=C_grid_is_success)
     out.update(correlation)
 
     return out
 
-out = Parallel(n_jobs=12)(
-    delayed(run_simulation)(*params) for params in iter_sim)
+out = Parallel(n_jobs=8)(
+    delayed(run_simulation)(sim_id, *params)
+    for sim_id, params in enumerate(iter_sim) if sim_id == 0)
 
 pd.DataFrame([oo for oo in out if oo is not None]).to_hdf('./simulations.hdf5')

@@ -1,0 +1,156 @@
+import itertools
+
+from joblib import Parallel, delayed
+
+import numpy as np
+import pandas as pd
+
+from sklearn.cross_validation import ShuffleSplit
+from sklearn.linear_model import Lasso
+from statsmodels.regression.linear_model import OLS
+
+
+def compute_lasso_regpath(X, y, C_grid):
+    """Compute the Lasso path."""
+    coef_list2 = []
+    acc_list2 = []
+    nonzero_list2 = []
+    for i_step, my_C in enumerate(C_grid):
+        sample_accs = []
+        sample_coef = []
+        for i_subsample in range(100):
+            folder = ShuffleSplit(n=len(y), n_iter=100, test_size=0.1,
+                                  random_state=i_subsample)
+            train_inds, test_inds = next(iter(folder))
+
+            clf = Lasso(alpha=my_C, random_state=i_subsample)
+
+            clf.fit(X[train_inds, :], y[train_inds])
+            acc = clf.score(X[test_inds, :], y[test_inds])
+
+            sample_accs.append(acc)
+            sample_coef.append(clf.coef_)
+
+        mean_coefs = np.mean(np.array(sample_coef), axis=0)
+        coef_list2.append(mean_coefs)
+        acc_list2.append(np.mean(sample_accs))
+        notzero = np.count_nonzero(mean_coefs)
+        print("alpha: %.4f acc: %.2f active_coefs: %i" % (my_C, acc, notzero))
+        nonzero_list2.append(notzero)
+    return np.array(coef_list2), np.array(acc_list2), np.array(nonzero_list2)
+
+
+def _clip_pvals(pvals):
+    pvals[pvals == 0] = np.finfo(pvals.dtype).eps
+    return pvals
+
+
+sample_range = range(100, 1000, 200)
+n_feat_range = (40,)
+n_feat_relevant_range = range(0, 40, 5)
+epsilon_range = (0, 0.5, 1, 2, 10)
+
+correlation = tuple([
+    dict(n_corr_feat=x, corr_strength=y)
+    for x in (0.1, 0.5, 1)
+    for y in (0.5, 0.9)])
+
+model_violation = (None, 'abs', 'log', 'exp', 'sqrt', '1/x',
+                   'x^2', 'x^3', 'x^4', 'x^5')
+
+random_seeds = (14, 42, 86)
+C_grid = np.logspace(-3, 2, 50)
+iter_sim = itertools.product(
+    sample_range, n_feat_range, n_feat_relevant_range,
+    epsilon_range, correlation, model_violation, random_seeds)
+
+
+def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
+                   correlation, model_violation, seed,
+                   C_grid=C_grid):
+    """Run Inference-Prediction simulation."""
+    # Set up ground truth model.
+    rs = np.random.RandomState(seed)
+    epsilon = rs.randn(n_samples)
+    true_coefs = rs.randn(n_feat)
+    true_coefs[n_feat_relevant:] = 0
+    X = rs.randn(n_samples, n_feat)
+
+    # Introduce correlation:
+    if correlation is not None:
+        n_corr_feat = correlation['n_corr_feat']
+        corr_strength = correlation['corr_strength']
+        cov = np.ones((n_corr_feat, n_corr_feat)) * corr_strength
+        cov.flat[::n_corr_feat + 1] = 1
+
+        X_corr = rs.multivariate_normal(
+            mean=np.zeros((n_corr_feat)), cov=cov, size=n_samples)
+        X[:, 0:n_corr_feat] = X_corr
+    else:
+        correlation = dict(n_corr_feat=None, corr_strength=None)
+
+    # Introduce transforms that are not captured by the model.
+    if model_violation is None:
+        n_viol = 1.
+    elif model_violation is not None:
+        if n_feat_relevant > 0:
+            n_viol = min(1, int(round(n_feat_relevant / 2)))
+        else:
+            return None  # nothing to do ... case already covered.
+
+        X_viol = X.copy()
+        signs = np.sign(X)
+        if model_violation == 'abs':
+            X_viol[:, :n_viol] = np.abs(X_viol[:, :n_viol])
+        elif model_violation == 'log':
+            X_viol[:, :n_viol] = signs[:, 0:6] * np.log(
+                np.abs(X_viol[:, :n_viol]))
+        elif model_violation == 'sqrt':
+            X_viol[:, :n_viol] = signs[:, :n_viol] * np.sqrt(
+                np.abs(X_viol[:, :n_viol]))
+        elif model_violation == 'exp':
+            X_viol[:, :n_viol] = signs[:, :n_viol] * np.exp(X_viol[:, :n_viol])
+        elif model_violation == '1/x':
+            X_viol = X_viol[:, :n_viol] = 1. / X_viol[:, :n_viol]
+        elif model_violation == 'x^2':
+            X_viol[:, :n_viol] **= 2
+        elif model_violation == 'x^3':
+            X_viol[:, :n_viol] **= 3
+        elif model_violation == 'x^4':
+            X_viol[:, :n_viol] **= 4
+        elif model_violation == 'x^5':
+            X_viol[:, :n_viol] **= 5
+
+    # Generate target.
+    y = (true_coefs * X_viol).sum(axis=1) + epsilon
+
+    # Compute ordinary least squares.
+    model = OLS(y, X)
+    res = model.fit()
+    lr_coefs = res.params
+    lr_pvalues = _clip_pvals(res.pvalues)
+
+    # Compute Lasso regularization paths.
+    coef_list, acc_list, nonzero_list = compute_lasso_regpath(
+        X, y, C_grid)
+
+    # Check if simulation is useful and zero coefs occur.
+    C_grid_is_success = True
+    if not np.any(np.sum(coef_list == 0.)):
+        C_grid_is_success = False
+
+    # Bundle results and good bye.
+    out = dict(
+        n_samples=n_samples, n_feat=n_feat, n_feat_relevant=n_feat_relevant,
+        seed=seed, lr_coefs=lr_coefs, lr_pvalues=lr_pvalues,
+        coef_list=coef_list, nonzero_list=nonzero_list,
+        pathology=pathology, sim_id=sim_id,
+        C_grid_is_success=C_grid_is_success)
+    out.update(correlation)
+
+    return out
+
+out = Parallel(n_jobs=12)(
+    delayed(run_simulation)(*params) for params in iter_sim)
+
+pd.DataFrame([oo for oo in out if oo is not None]).to_hdf('./simulations.hdf5')

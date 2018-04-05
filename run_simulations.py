@@ -1,3 +1,8 @@
+# Authors: Denis Engemann <denis.engemann@gmail.com>
+#          Danilo Bzdok <danilobzdok@gmail.com>
+#
+# License: BSD (3-clause)
+
 import itertools
 
 from joblib import Parallel, delayed

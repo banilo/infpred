@@ -1,3 +1,8 @@
+# Authors: Denis Engemann <denis.engemann@gmail.com>
+#          Danilo Bzdok <danilobzdok@gmail.com>
+#
+# License: BSD (3-clause)
+
 import itertools
 
 from joblib import Parallel, delayed
@@ -6,17 +11,22 @@ import numpy as np
 import pandas as pd
 
 from sklearn.cross_validation import ShuffleSplit
-from sklearn.linear_model import Lasso
+from sklearn.linear_model import Lasso, LinearRegression
+from sklearn.metrics import r2_score
 from statsmodels.regression.linear_model import OLS
 
 
-def compute_lasso_regpath(X, y, C_grid):
-    """Compute the Lasso path."""
+def compute_lasso_regpath(X, y, C_grid, metric=None, verbose=True):
+    """Run lass path and compute biased + debiased accuracy."""
     coef_list2 = []
     acc_list2 = []
+    acc_unbiased_list2 = []
     nonzero_list2 = []
+    if metric is None:
+        metric = r2_score
     for i_step, my_C in enumerate(C_grid):
         sample_accs = []
+        sample_accs_unbiased = []
         sample_coef = []
         for i_subsample in range(100):
             folder = ShuffleSplit(n=len(y), n_iter=100, test_size=0.1,
@@ -26,18 +36,45 @@ def compute_lasso_regpath(X, y, C_grid):
             clf = Lasso(alpha=my_C, random_state=i_subsample)
 
             clf.fit(X[train_inds, :], y[train_inds])
-            acc = clf.score(X[test_inds, :], y[test_inds])
+            acc = metric(
+                y_true=y[test_inds],
+                y_pred=clf.predict(X[test_inds]))
+
+            # get out-of-sample accuracy from unbiased linear model
+            # with selected inputs
+            b_vars_to_keep = clf.coef_ != 0
+            if np.sum(b_vars_to_keep) > 0:
+                unbiased_lr = LinearRegression()
+                unbiased_lr.fit(
+                    X[train_inds, :][:, b_vars_to_keep], y[train_inds])
+                unbiased_acc = metric(
+                    y_true=y[test_inds],
+                    y_pred=unbiased_lr.predict(
+                        X[test_inds][:, b_vars_to_keep]))
+            else:
+                unbiased_acc = 0
 
             sample_accs.append(acc)
+            sample_accs_unbiased.append(unbiased_acc)
             sample_coef.append(clf.coef_)
 
         mean_coefs = np.mean(np.array(sample_coef), axis=0)
         coef_list2.append(mean_coefs)
-        acc_list2.append(np.mean(sample_accs))
+        acc_for_C = np.mean(sample_accs)
+        acc_for_C_unbaised = np.mean(sample_accs_unbiased)
+        acc_list2.append(acc_for_C)
+        acc_unbiased_list2.append(np.mean(sample_accs_unbiased))
         notzero = np.count_nonzero(mean_coefs)
-        print("alpha: %.4f acc: %.2f active_coefs: %i" % (my_C, acc, notzero))
         nonzero_list2.append(notzero)
-    return np.array(coef_list2), np.array(acc_list2), np.array(nonzero_list2)
+        if verbose:
+            print("alpha: %.4f acc: %.2f / %.2f (unbiased) "
+                  "active_coefs: %i" % (
+                      my_C, acc_for_C, acc_for_C_unbaised, notzero))
+    out = (np.array(coef_list2),
+           np.array(acc_list2),
+           np.array(acc_unbiased_list2),
+           np.array(nonzero_list2))
+    return out
 
 
 def _clip_pvals(pvals):
@@ -71,6 +108,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
                    C_grid=C_grid):
     """Run Inference-Prediction simulation."""
     # Set up ground truth model.
+    print(sim_id)
     rs = np.random.RandomState(seed)
     epsilon = rs.randn(n_samples)
     true_coefs = rs.randn(n_feat)
@@ -133,28 +171,30 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
     lr_pvalues = _clip_pvals(res.pvalues)
 
     # Compute Lasso regularization paths.
-    coef_list, acc_list, nonzero_list = compute_lasso_regpath(
+    coefs, scores, scores_debiased, nonzero = compute_lasso_regpath(
         X, y, C_grid)
 
     # Check if simulation is useful and zero coefs occur.
     C_grid_is_success = True
-    if not np.any(np.sum(coef_list == 0.)):
+    if np.min(nonzero) > 0:
         C_grid_is_success = False
+        print('Bad')
 
-    # # Bundle results and good bye.
+    # Bundle results and good bye.
     print('Done')
     out = dict(
         n_samples=n_samples, n_feat=n_feat, n_feat_relevant=n_feat_relevant,
         seed=seed, lr_coefs=lr_coefs, lr_pvalues=lr_pvalues,
-        coef_list=coef_list, nonzero_list=nonzero_list,
+        coefs=coefs, nonzero=nonzero,
+        scores=scores, scores_debiased=scores_debiased,
         pathology=model_violation, sim_id=sim_id,
         C_grid_is_success=C_grid_is_success)
     out.update(correlation)
     return out
 
-out = Parallel(n_jobs=1)(
+out = Parallel(n_jobs=44)(
     delayed(run_simulation)(sim_id, *params)
-    for sim_id, params in enumerate(iter_sim))
+    for sim_id, params in enumerate(iter_sim) if sim_id == 0)
 
 df = pd.DataFrame([oo for oo in out if oo is not None])
 

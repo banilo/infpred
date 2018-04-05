@@ -166,7 +166,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
     lr_pvalues = _clip_pvals(res.pvalues)
 
     # Compute Lasso regularization paths.
-    coefs, scores, scored_debiased, nonzero = compute_lasso_regpath(
+    coefs, scores, scores_debiased, nonzero = compute_lasso_regpath(
         X, y, C_grid)
 
     # Check if simulation is useful and zero coefs occur.
@@ -181,7 +181,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         n_samples=n_samples, n_feat=n_feat, n_feat_relevant=n_feat_relevant,
         seed=seed, lr_coefs=lr_coefs, lr_pvalues=lr_pvalues,
         coefs=coefs, nonzero=nonzero,
-        scores=scores, scored_debiased=scored_debiased,
+        scores=scores, scores_debiased=scores_debiased,
         pathology=model_violation, sim_id=sim_id,
         C_grid_is_success=C_grid_is_success)
     out.update(correlation)

@@ -211,6 +211,17 @@ Discussion with Guillaume March 25:
 
 
 
+Discussion with Denis April 7:
+Also die Kerneinsicht könnte auch sein:
+A) In einer konkreten Studie (medical datasets), ist es schwer zu entscheiden, was der Unterschied zwischen prediction and significance bedeutet
+B) Über viele unterschiedliche Szenarien hinweg (simulations), gibt es eine Tendenz dass inference und prediction zusammengehen -> anders gedacht heißt das aber auch, dass prediction dann gut und gern inference mittel- und langfrisitg ersetzten *könnte*
+
+Meta-Ziel: wäre gut, einen Multi-panel Plot hinzubekommen, wo wir 2x2 Aspekte aus dem Simus herauskitzeln, des mit dem herangezoomten ist bspw. schon super...multi-panel Plots sind ein high-impact hallmark
+
+
+
+
+
 
 
 Applications:

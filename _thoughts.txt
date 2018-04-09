@@ -220,6 +220,10 @@ Meta-Ziel: wäre gut, einen Multi-panel Plot hinzubekommen, wo wir 2x2 Aspekte a
 
 
 
+Discussion with Michael April 9:
+- an important distinction is between "pathological models" and ground-truth models that are correct -> these subgroups of the simulations should be able to dissociate between similar in-sample and out-of-sample performances and diverging ones
+- one plot idea: plot in/out-sample difference in linear regression on x axis and the analogous metric on the y axis for prediction algorithm
+
 
 
 

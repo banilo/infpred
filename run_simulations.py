@@ -82,15 +82,17 @@ def _clip_pvals(pvals):
     return pvals
 
 
-sample_range = range(100, 1000, 200)
+sample_range = list(np.arange(10, 100, 10)) + list(np.arange(100, 2001, 100))
+# sample_range = range(100, 1000, 200)
 n_feat_range = (40,)
-n_feat_relevant_range = range(1, 41, 3)
-epsilon_range = (0, 0.5, 1, 2, 10)
+n_feat_relevant_range = np.arange(1, 41, 3)
+epsilon_range = (0, 0.5, 1, 2, 10)  # much noise + 1 relevant feature = almost garbage input
 
-correlation = tuple([
-    dict(n_corr_feat=x, corr_strength=y)
+correlation = tuple(
+    [dict(n_corr_feat=x, corr_strength=y)
     for x in (0.5, 1.0)
-    for y in (0.5, 0.9)])
+    for y in (0.5, 0.9)] +
+    [dict(n_corr_feat=0, corr_strength=0)])  # TODO: make sure no multicollinearity is in!
 
 model_violation = (None, 'abs', 'log', 'exp', 'sqrt', '1/x',
                    'x^2', 'x^3', 'x^4', 'x^5')
@@ -100,17 +102,18 @@ C_grid = np.logspace(-3, 2, 50)
 
 iter_sim = itertools.product(
     sample_range, n_feat_range, n_feat_relevant_range,
-    epsilon_range, correlation, model_violation, random_seeds)
+    epsilon_range, correlation, model_violation)
 
 
-def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
-                   correlation, model_violation, seed,
+def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, noise_level,
+                   correlation, model_violation,
                    C_grid=C_grid):
     """Run Inference-Prediction simulation."""
     # Set up ground truth model.
     print(sim_id)
-    rs = np.random.RandomState(seed)
-    epsilon = rs.randn(n_samples)
+    seed = sim_id
+    rs = np.random.RandomState(seed)  # different random initialization for each sim.
+    epsilon = rs.randn(n_samples) * noise_level  # if noise_level==0 then no NOISE
     true_coefs = rs.randn(n_feat)
     true_coefs[n_feat_relevant:] = 0
     X = rs.randn(n_samples, n_feat)
@@ -130,7 +133,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
 
     # Introduce transforms that are not captured by the model.
     if model_violation is None:
-        X_viol = X
+        X_viol = X.copy()
     elif model_violation is not None:
         if n_feat_relevant > 0:
             n_viol = max(1, int(round(n_feat_relevant / 2)))
@@ -187,7 +190,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, epsoilon,
         seed=seed, lr_coefs=lr_coefs, lr_pvalues=lr_pvalues,
         coefs=coefs, nonzero=nonzero,
         scores=scores, scores_debiased=scores_debiased,
-        pathology=model_violation, sim_id=sim_id,
+        pathology=model_violation, sim_id=sim_id, noise=noise_level,
         C_grid_is_success=C_grid_is_success)
     out.update(correlation)
     return out

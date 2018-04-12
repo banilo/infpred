@@ -27,12 +27,29 @@ keywords: statistical significance | prediction | high-dimensional data | variab
 
 
 Main conclusions: our goal is a *topical* success
+0) ASYMMETRY significant -> nicht klar wie predictive
+significant zu werden ist kein hartes Urteil -> das allein sagt erstmal wenig darüber aus, ob man im gleichen dataset auch predictive Ergebnisse erzielen kann
+
+nicht significant -> in most simulated cases, also not predictive
+
+very good prediction immer auch significance
+
+v.a. Was predictive ist, ist in 100.000 immer auch signifikant gewesen
+ist die Erzählform die weniger wütende Reaktionen hervorruft
+
+
+
+
 1) across simulations and applications, inference/GLM tends to yield more false positives, while prediction yielded more false negatives (coherent with the parsimony constraint of the Lasso)
+
+
 2) all four possible cases occur in practice:
   * significant and predictive
   * significant but not predictive
   * not significant but predictive
   * not significant and not predictive
+
+
 3) Efron & Tibshirani 1993: Statististcians work at the intersection of empirical research,
 science, and philosophy -> this project tried to emphasize the importance of the philsophical
 component of medical research activity. Just because the methods that we use automatically

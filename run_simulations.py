@@ -87,8 +87,8 @@ sample_range += list(np.arange(100, 2001, 100))  # mid range
 sample_range += [10000, 100000]  # biggish data
 
 n_feat_range = (40,)
-n_feat_relevant_range = list(np.arange(1, 41, 3)) + [40]
-epsilon_range = (0, 0.5, 1, 2, 10)
+n_feat_relevant_range = list(np.arange(1, 41, 3))
+epsilon_range = (0, 0.5, 1, 2, 5, 10)
 
 correlation = tuple(
     [dict(n_corr_feat=x, corr_strength=y)

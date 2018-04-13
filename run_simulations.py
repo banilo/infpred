@@ -195,7 +195,7 @@ def run_simulation(sim_id, n_samples, n_feat, n_feat_relevant, noise_level,
     out.update(correlation)
     return out
 
-out = Parallel(n_jobs=44)(
+out = Parallel(n_jobs=1)(
     delayed(run_simulation)(sim_id, *params)
     for sim_id, params in enumerate(iter_sim) if sim_id == 0)
 

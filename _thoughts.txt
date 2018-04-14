@@ -54,8 +54,7 @@ ist die Erzählform die weniger wütende Reaktionen hervorruft
 science, and philosophy -> this project tried to emphasize the importance of the philsophical
 component of medical research activity. Just because the methods that we use automatically
 generate results does not preclude the necessity of questioning the obtained results and
-conclusions; just because a tool gives answsers, does not mean that the tool has been an
-appropriate choice for the underlying research question
+conclusions; just because a tool gives answsers, does not mean that the tool has been the optimal choice for the underlying research question.
 
 - the present example is a simplified version of many current real-world settings: in the high-dimensional settings, the divergence between prediction and inference can be expected to be even bigger
 

@@ -9,6 +9,15 @@ TODO:
 - Consider in Lasso/accuracy plot: add horizontal line for OLS train+test R2 (like in Yarkoni/Westfall)
 
 
+TODOS/PLOTTING:
+1) binary colorbar: pathological vs model class fits how data were generated
+2) continuous cb: degrees of multicollinearity
+3) binary: noise vs no noise
+4) continous: degrees of relevant input variables
+5) continous: linear vs non-linear (degrees of Polynomial transformations)
+6) continuous: sample size n
+
+
 
 
 1. FEV - prediction ignores the significant ones

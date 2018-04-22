@@ -257,6 +257,12 @@ Discussion with Michael April 9:
 
 
 
+Discussion with Stefan Haufe April 15:
+-the more common case may be univariate regression and related p-values, for each input variable separately -> answer: Hastie2015 p. 128 says one variable can be insignificant and only become significant when included in a model with other variables
+
+
+
+
 
 
 Applications:
@@ -273,4 +279,11 @@ Target journals:
 
 
 
-JBP? Nichols?
+Feedback:
+JBP
+Guillaume
+Naomi
+Thomas
+Kriegeskorte
+
+

@@ -152,6 +152,7 @@ fig.savefig('./figures/simulations_by_violation.tiff', bbox_inches='tight', dpi=
 
 ################################################################################
 
+
 # pathological versus non-pathological
 plt.close('all')
 scores_ = scores.max(-1)

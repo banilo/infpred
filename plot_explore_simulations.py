@@ -7,7 +7,7 @@ from mpl_toolkits.axes_grid.inset_locator import inset_axes
 
 df = pd.read_pickle('./simulations.gzip')
 
-df.pathology[df.pathology.isnull()] = 'None'
+df.model_violation[df.model_violation.isnull()] = 'None'
 
 pvals = np.array([x for x in df['lr_pvalues'].values])
 
@@ -26,20 +26,27 @@ fig = plt.figure(figsize=(8, 6))
 ax = plt.gca()
 x, y = -np.log10(pvals_), scores_
 color = df.n_feat_relevant.values[:]
-size = df.n_samples.values * 0.05
-scat = ax.scatter(x, y, c=color, s=size,
-                  edgecolors='face',
-                  cmap=plt.get_cmap('viridis', len(np.unique(color))),
-                  vmin=0.2, vmax=color.max(),
-                  alpha=0.2)
+size = np.sqrt(df.n_samples.values)
+
+# scat = ax.scatter(x, y, c=color, s=size,
+#                   edgecolors='face',
+#                   cmap=plt.get_cmap('viridis', len(np.unique(color))),
+#                   vmin=0.2, vmax=color.max(),
+#                   alpha=0.2)
+
+hb = ax.hexbin(x, y, gridsize=0,
+               # norm=plt.matplotlib.colors.Normalize(0, 500),
+               # norm=plt.matplotlib.colors.LogNorm(),
+               # bins='log',
+               cmap='viridis')
 
 ax.grid(True)
 ax.axvline(-np.log10(0.05), color='red', linestyle='--')
-cb = fig.colorbar(scat)
+cb = fig.colorbar(hb)
 cb.set_alpha(1)
 cb.draw_all()
 
-cb.set_label('# relevant features ', fontsize=14, fontweight=100)
+cb.set_label('# simulations ', fontsize=14, fontweight=100)
 
 sns.despine(trim=True, ax=ax)
 plt.xlabel(r'significance [$-log_{10}(p)$]', fontsize=20, fontweight=150)
@@ -59,7 +66,8 @@ ax_inset.set_ylim(0, 1)
 ax_inset.axvline(-np.log10(0.05), color='red', linestyle='--')
 ax_inset.set_xlabel(r'$-log_{10}(p)$', fontsize=10, fontweight=150)
 ax_inset.set_ylabel(r'$R^2$', fontsize=10, fontweight=150)
-fig.savefig('./figures/simulations_overview.tiff', bbox_inches='tight', dpi=600)
+
+fig.savefig('./figures/simulations_overview.tiff', bbox_inches='tight', dpi=300)
 
 
 pathologies = [

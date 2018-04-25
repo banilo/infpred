@@ -1,8 +1,12 @@
+# Authors: Denis Engemann <denis.engemann@gmail.com>
+#          Danilo Bzdok <danilobzdok@gmail.com>
+#
+# License: BSD (3-clause)
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from mpl_toolkits.axes_grid.inset_locator import inset_axes
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 

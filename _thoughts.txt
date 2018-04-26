@@ -10,12 +10,9 @@ TODO:
 
 
 TODOS/PLOTTING:
-1) binary colorbar: pathological vs model class fits how data were generated
-2) continuous cb: degrees of multicollinearity
-3) binary: noise vs no noise
-4) continous: degrees of relevant input variables
-5) continous: linear vs non-linear (degrees of Polynomial transformations)
-6) continuous: sample size n
+1) -inkets lieber 0.05 statt 0.5 damit
+2)  “True model or not” waerr ev nich svhneller verstaendlich
+
 
 
 

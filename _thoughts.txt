@@ -12,6 +12,11 @@ TODO:
 TODOS/PLOTTING:
 1) -inkets lieber 0.05 statt 0.5 damit
 2)  “True model or not” waerr ev nich svhneller verstaendlich
+3) Fig 2 / polynomial degree: is the only one which has a SUBSET of the data from figure 1
+4) Figure 1 / B: colorbar mit der sample size grey
+
+
+
 
 
 
@@ -261,6 +266,18 @@ Discussion with Stefan Haufe April 15:
 
 Discussion at Danilo's group meeting April 23:
 - Warum berechnet Ihr nicht einfach auch den p-Wert von dem R^2 Wert auf der y Achse? -> Ich sagte: "Naja, das ist eig3ntlifch das, was ich Euch diel etzten 2 Jahre versuche zu erklären." "Kann man berechnen, macht aber hier keinen Sinn."
+
+
+
+Discussion with Cedric April 26:
+- the title may be kinda vague, action verb, with the key
+- notebook: we should add univariate regression for the p-value side
+- we need a happy end: take subsets of UKBB with always more subject to show that R2 and p-values converge in big samples
+- depression: if we only expose the divergence -> people
+- cancer / oncology: there we successfully find target genes that are significant -> that also turned out to successfully to precision medicine => probably favorable conditions (linear, less noise, single strong causal effects with one-to-one mapping of gene and cancer phenotype)
+- we chose 40 variables: this is the boundary were linear regression
+- a new title should be punchy and accurate: Data simulation and real-world evidence for the prediction-inference divergence in biomedicine
+
 
 
 

@@ -10,8 +10,8 @@ TODO:
 
 
 TODOS / PLOTTING:
-1) -inkets lieber 0.05 statt 0.5 damit
-2)  “True model or not” waerr ev nich svhneller verstaendlich
+1) -inkets lieber 0.05 statt 0.5 damit intuitiver lesbar
+2)  “True model or not” waere ev. noch schneller verstaendlich
 3) Fig 2 / polynomial degree: is the only one which has a SUBSET of the data from figure 1
 4) Figure 1 / B: colorbar mit der sample size grey
 
@@ -131,7 +131,12 @@ Interesting points from the literature:
 
 CAVEATS / COUNTER-ARGUMENTS:
 - One may wonder whether the shortcoming of using signifi- cance is due to the custom of using marginal significance and not taking into account the possible interaction effects of groups of variables.
+
 - important question is also significance-based filtering for subsequent prediction
+
+- all your linear models are fitted on all inputs at the same time, so the significance is actually divided between the different input variables -> Danilo: If we do separate linear models on each coefficient we need to account for multiple comparisons
+
+- your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% naturalistic setting -> we chose 40 variables: this is the boundary were linear regression was still feasible and were advantages of penalized regression start to genau advnatage -> 40 input variables is a natural contact zone between classical statistics and ML
 
 
 
@@ -225,7 +230,7 @@ Discussion with Denis:
 
 
 Discussion with Demian:
-- The Achilles heel is: any variable significant variable will also be predictive
+- The Achilles heel is: any very significant variable will also be predictive
 -> we need to show case where not predictive but strongly significant ("hoechstsignifikant")
 - The whole inf-versus-pred problem goes away when we deal with a very strong effect
 -> but in these scenario we probably do not need statistics to observe the effect
@@ -300,9 +305,13 @@ Target journals:
 
 Feedback:
 JBP
+Sato
 Guillaume
 Naomi
-Thomas
+Thomas Yeo
 Kriegeskorte
+
+
+
 
 

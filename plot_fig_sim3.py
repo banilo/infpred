@@ -28,7 +28,7 @@ sns.set_style('ticks')
 plt.close('all')
 
 titles = [
-    'True model',
+    'True model or not',
     'Polynomial degree',
     'Corruption with noise',
     'Multi-collinearity',
@@ -47,7 +47,8 @@ cases = [
 
 data_index = {
     'model': np.arange(len(df)),
-    'poly': df.model_violation.str.contains('\^').values,
+    # 'poly': df.model_violation.str.contains('\^').values,
+    'poly': np.arange(len(df)),
     'noise': np.arange(len(df)),
     'correlation': np.arange(len(df)),
     'sample size': np.arange(len(df)),
@@ -72,8 +73,8 @@ for i_case, case in enumerate(cases):
         cvals = (df.model_violation != 'None').values.astype(int)
     elif case == 'poly':
         cvals = np.array([
-            int(x.split('^')[-1]) for x in
-            df.model_violation.values[inds] if '^' in x])
+            int(x.split('^')[-1]) if '^' in x else 0 for x in
+            df.model_violation.values[inds]])
     elif case == 'noise':
         cvals = df.noise.values
     elif case == 'correlation':
@@ -126,9 +127,9 @@ for i_case, case in enumerate(cases):
         [ll if ii % 2 else '' for ii, ll in enumerate(unique_vals)])
     if case == 'model':
         cb.set_ticklabels(['no', 'yes'])
-    
+
     cax.tick_params(labelsize=8)
-    
+
     ax.set_xlim(-5, 305)
     ax.set_xticks([0, 100, 200, 300])
 
@@ -154,14 +155,15 @@ for i_case, case in enumerate(cases):
                             alpha=0.5)
     ax_inset.set_xlim(*-np.log10([0.5, 0.001]))
     ax_inset.set_xticks(
-        -np.log10([0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0.01, 0.01, 0.001]))
+        -np.log10([0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0.01, 0.001]))
+    ax_inset.set_xticklabels(
+        ['', '', '', '', '', 0.05, '', 0.001],
+        color='#383838')
+
     ax_inset.set_ylim(-0.05, 1.05)
     ax_inset.axvline(
         -np.log10(0.05), color='red', linestyle='--')
     pvals_orig = (10 ** (-1 * ax_inset.get_xticks())).round(3)
-    ax_inset.set_xticklabels([
-        str(ll) if ii in [0, len(pvals_orig) - 1]
-        else '' for ii, ll in enumerate(pvals_orig)], color='#383838')
     ax_inset.set_yticklabels(['', 0, 1, ''], color='#383838')
     sns.despine(trim=True, ax=ax)
     ax_inset.tick_params(labelsize=8)

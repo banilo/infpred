@@ -17,6 +17,9 @@ TODOS / PLOTTING:
 
 
 
+TERM
+does not always go hand-in-hand with; to back claims; differently nuanced; embrace; irrespective of; predictive focus/inference focus; explanatory and predictive qualities; set the stage for; elaborate
+
 
 
 
@@ -136,7 +139,7 @@ CAVEATS / COUNTER-ARGUMENTS:
 
 - all your linear models are fitted on all inputs at the same time, so the significance is actually divided between the different input variables -> Danilo: If we do separate linear models on each coefficient we need to account for multiple comparisons
 
-- your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% naturalistic setting -> we chose 40 variables: this is the boundary were linear regression was still feasible and were advantages of penalized regression start to genau advnatage -> 40 input variables is a natural contact zone between classical statistics and ML
+- your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% naturalistic setting -> we chose 40 variables: this is the boundary were linear regression was still feasible and were advantages of penalized regression start to genau advnatage -> 40 input variables is a natural contact zone between classical statistics and ML + usual forward-stepwise does not work in 40 variables
 
 
 

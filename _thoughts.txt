@@ -305,7 +305,10 @@ Target journals:
 
 Feedback:
 JBP
+Alex Koch
 Sato
+Haufe
+Alex Gramfort?
 Guillaume
 Naomi
 Thomas Yeo

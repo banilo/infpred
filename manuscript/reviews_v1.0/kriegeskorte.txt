@@ -1,0 +1,26 @@
+good that you are exploring this. i can't read in detail at the moment, but i had a quick look.
+here are some quick thoughts on what might be improved...
+
+i wonder if the main message could be clarified by considering effect sizes and confidence intervals in greater detail.
+frequentist inference corresponds to checking if 0 is inside the confidence interval.
+this tells us little about the size of the effect (which is more simply related to prediction performance).
+
+it would be good to see plots of effect size versus predictive R2. this might make it easier to understand the relationships.
+
+one might also ask what the motivation is for plotting p values versus predictive R2.
+in the sense you use the term inference, it is about a significance decision. people say there is a significant relationship on the basis of the p value.
+are you suggesting that people confuse p values for a continuous predictive performance measure? i don't think so.
+
+the goal of the paper should probably be didactical: help scientists understand the distinct meanings of p value, effect size, and predictive performance.
+
+at the end you seem to suggest that predictive modeling is more about applications and significance testing is more about finding true relationships.
+i understand the argument, but would argue that complex models tested by prediction are also essential for basic science and that "inference" (of the frequentist and Bayesian variety) is essential for both basic science and applications as well.
+
+in the figures, the small insets are much more effective than the large panels, because the small insets make the expected positive relationship apparent, showing the nonsignificant and significant ranges more clearly. i would fear that 90% of the readers will not understand the large plots at all. i suggest using only the small insets and blowing them up to full size.
+ 
+the diabetes example had a lot of medical detail and i'm not sure it helps most readers get the point quickly.
+
+this is incorrect: "For each input variable, the approach attempts to reject the null hypothesis that the corresponding beta coefficient at hand deviates from chance."
+(the null hypothesis states that the beta is truly 0 and the estimate reflects chance.)
+
+hope this helps. all the best with the paper.

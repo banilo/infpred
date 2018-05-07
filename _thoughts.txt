@@ -14,6 +14,9 @@ TODOS / PLOTTING:
 2)  “True model or not” waere ev. noch schneller verstaendlich
 3) Fig 2 / polynomial degree: is the only one which has a SUBSET of the data from figure 1
 4) Figure 1 / B: colorbar mit der sample size grey
+5) Add panel letters A/B/... as already indicated in the figure captions
+
+
 
 
 
@@ -286,6 +289,29 @@ Discussion with Cedric April 26:
 - we chose 40 variables: this is the boundary were linear regression was still feasible and were advantages of penalized regression start to genau advnatage -> 40 input variables is a natural contact zone between classical statistics and ML
 - a new title should be punchy and accurate: Data simulation and real-world evidence for the prediction-inference divergence in biomedicine
 
+
+
+Thomas Yeo:
+
+There is nothing stopping one from using the estimated beta from OLS for prediction. When the number of regressors are small, the test accuracy might even be reasonable. 
+
+Similarly. I am sure you know that for LASSO, one could perform post-selection inference on the betas. 
+
+As such the differentiation between the OLS and LASSO is not necessarily inference versus prediction per se. The inference and prediction distinction arose from what the betas are used for by the modeler.  
+
+In short, any difference you show later might be due to the different models that you are using (OLS versus LASSO), rather than because of the inference/prediction distinction.
+
+It might make more sense to use the same model (e.g., OLS or LASSO), and then utilize it for both prediction and inference, in order to differentiate the two goals (inference versus prediction).
+
+-> Danilo: All reported prediction scores were obtained from an OLS approach based on the variables selected from a preceeding LASSO fit.
+
+
+
+Joao:
+This is interesting point, because one of the most highlighted claims of him is that in small samples, the probability of Type I Error is greater than the statistical power. In other words, the probability of a finding to be true is less than to be false.
+However, in the age of big data, the samples are indeed big. Thus, the problem here is not on the false positives, but the actual relevance of the finding. This is why effect sizes and AUC, etc… are important.  However, ever if they are high, they are statistically irrelevant if they are not significant.
+
+ I would also add variables which do not belong to the true model (generator model) but are also correlated with the true predictors.
 
 
 

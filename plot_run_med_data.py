@@ -130,17 +130,17 @@ def _run_infpred(case):
     return unbiased_acc_list, lr_pvalues, coef_list, feat_names
 
 cases = [
-    ('case1', 'diabetes',
-     'Diabetes Data\nPredictive and some significant'),
+    ('case1', 'Birthweight',
+     'Birthweight Data\nsignificant, but hard to predict'),
     ('case2', 'prostata',
      'Prostata Data\nPredictive but not significant'),
-    ('case3', 'FEV',
+    ('case3', 'diabetes',
+     'Diabetes Data\nPredictive and some significant'),
+    ('case4', 'FEV',
      'FEV Data\nsignificant but largely\nignorable for prediction'),
-    ('case4', 'Birthweight',
-     'Birthweight Data\nsignificant, but hard to predict')
 ]
 
-results = [_run_infpred(case) for case, title in cases]
+results = [_run_infpred(case) for case, _, _ in cases]
 
 
 def _plot_infpred(unbiased_acc_list, lr_pvalues, coef_list, feat_names,

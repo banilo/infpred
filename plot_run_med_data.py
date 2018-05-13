@@ -74,10 +74,13 @@ def compute_lasso_regpath(X, y, C_grid, metric=None, verbose=True):
 
 def _get_data(case):
     if case == 'case1':
-        bun = ds.load_diabetes()
-        X, y = bun.data, bun.target
-        X = StandardScaler().fit_transform(X)
-        feat_names = bun.feature_names
+        df_birth = pd.read_csv('dataset_birthwt.csv')
+        df_part1 = StandardScaler().fit_transform(df_birth[['age', 'lwt']])
+        df_part2 = df_birth[['race', 'smoke', 'ptl', 'ht', 'ui', 'ftv']]
+        feat_names = ['age', 'lwt'] + list(df_part2.columns)
+        y = StandardScaler().fit_transform(
+            df_birth['bwt'].values[:, None])[:, 0]
+        X = np.hstack((df_part1, df_part2))
     elif case == 'case2':
         df_prostate = pd.read_csv('dataset_prostate.csv')
         y = df_prostate['lpsa']
@@ -86,6 +89,11 @@ def _get_data(case):
                       'pgg45']
         X = StandardScaler().fit_transform(df_prostate[feat_names])
     elif case == 'case3':
+        bun = ds.load_diabetes()
+        X, y = bun.data, bun.target
+        X = StandardScaler().fit_transform(X)
+        feat_names = bun.feature_names
+    elif case == 'case4':
         df_fev = pd.read_csv('dataset_FEV.csv')
 
         df_fev.drop(labels='id', axis=1, inplace=True)
@@ -100,14 +108,6 @@ def _get_data(case):
         X = np.hstack((df_part1.values, df_part2.values))
         feat_names = list(df_part1.columns) + list(df_part2.columns)
         feat_names = feat_names[:-1] + ['smoker']
-    elif case == 'case4':
-        df_birth = pd.read_csv('dataset_birthwt.csv')
-        df_part1 = StandardScaler().fit_transform(df_birth[['age', 'lwt']])
-        df_part2 = df_birth[['race', 'smoke', 'ptl', 'ht', 'ui', 'ftv']]
-        feat_names = ['age', 'lwt'] + list(df_part2.columns)
-        y = StandardScaler().fit_transform(
-            df_birth['bwt'].values[:, None])[:, 0]
-        X = np.hstack((df_part1, df_part2))
     return X, y, feat_names
 
 
@@ -132,9 +132,9 @@ def _run_infpred(case):
 cases = [
     ('case1', 'Birthweight',
      'Birthweight Data\nsignificant, but hard to predict'),
-    ('case2', 'prostata',
+    ('case2', 'Prostata',
      'Prostata Data\nPredictive but not significant'),
-    ('case3', 'diabetes',
+    ('case3', 'Diabetes',
      'Diabetes Data\nPredictive and some significant'),
     ('case4', 'FEV',
      'FEV Data\nsignificant but largely\nignorable for prediction'),
@@ -199,7 +199,7 @@ for ii, (case, key, title) in enumerate(cases):
     ax = axes[ii]
     unbiased_acc_list, lr_pvalues, coef_list, feat_names = results[ii]
     acc_offset = 0.1
-    if case == 'case3':
+    if case == 'case4':
         acc_offset = -0.35
 
     _plot_infpred(unbiased_acc_list, lr_pvalues, coef_list, feat_names,
@@ -211,6 +211,9 @@ for ii, (case, key, title) in enumerate(cases):
         -np.log10(0.05), color='red', linestyle='--', linewidth=3)
     if case == 'case2':
         ax.annotate('p < 0.05', xy=(0.75, 0.03), color='red',
+                    fontsize=14,)
+    elif case == 'case4':
+        ax.annotate('p < 0.05', xy=(5, 0.03), color='red',
                     fontsize=14,)
     else:
         ax.annotate('p < 0.05', xy=(-np.log10(0.045), 0.03), color='red',
@@ -226,7 +229,7 @@ for ii, (case, key, title) in enumerate(cases):
     ax.annotate(
         'ABCD'[ii], xy=(-0.15, 1.05), fontweight=200, fontsize=30,
         xycoords='axes fraction')
-plt.subplots_adjust(top=.83, bottom=0.15)
 
+plt.subplots_adjust(top=.83, bottom=0.15)
 fig.savefig('./figures/reg-cases.pdf', bbox_inches='tight')
 fig.savefig('./figures/reg-cases.png', bbox_inches='tight', dpi=300)

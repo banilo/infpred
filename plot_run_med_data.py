@@ -111,7 +111,7 @@ def _get_data(case):
     return X, y, feat_names
 
 
-def _run_infpred(case, title):
+def _run_infpred(case):
     X, y, feat_names = _get_data(case)
 
     model = OLS(y, X)
@@ -140,9 +140,7 @@ cases = [
      'Birthweight Data\nsignificant, but hard to predict')
 ]
 
-results = list()
-for ii, (case, key, title) in enumerate(cases):
-    results.append(_run_infpred(case, title))
+results = [_run_infpred(case) for case, title in cases]
 
 
 def _plot_infpred(unbiased_acc_list, lr_pvalues, coef_list, feat_names,

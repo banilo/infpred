@@ -13,6 +13,7 @@ from scipy.linalg import norm
 import sklearn.datasets as ds
 
 
+
 def compute_lasso_regpath(X, y, C_grid, metric=None, verbose=True):
     """Compute the lasso path."""
     coef_list2 = []
@@ -71,60 +72,6 @@ def compute_lasso_regpath(X, y, C_grid, metric=None, verbose=True):
             np.array(acc_unbiased_list2))
 
 
-def _plot_infpred(unbiased_acc_list, lr_pvalues, coef_list, feat_names,
-                  acc_offset=0.1, annot_ha='center'):
-    fig = plt.figure(figsize=(9, 9))
-    sorter = unbiased_acc_list.argsort()[::-1]
-    colors = plt.cm.viridis_r(np.linspace(0.1, 0.9, len(sorter)))
-
-    unique_nonzero = {}
-    size = 20
-    for ii, idx in enumerate(sorter):
-        acc = unbiased_acc_list[idx]
-        non_zero = np.where(coef_list[idx])[0]
-        if tuple(non_zero) not in unique_nonzero:
-            unique_nonzero[tuple(non_zero)] = non_zero
-        else:
-            print('skipping', ii)
-            continue
-
-        xx = -np.log10(lr_pvalues[non_zero])
-        this_acc = np.array([acc] * len(xx))
-        size *= 0.9
-        plt.plot(xx + np.random.sample(len(xx)) * 0.01,
-                 this_acc,
-                 marker='o', linestyle='None',
-                 color=colors[ii], zorder=-ii,
-                 alpha=0.9,
-                 mfc='None',
-                 mew=1,
-                 markersize=size)
-        if ii == 0:
-            psorter = np.argsort(lr_pvalues)
-            feat_names_ = [feat_names[kk] for kk in psorter]
-            xx2 = -np.log10(lr_pvalues[psorter])
-            for jj, (this_name, this_x) in enumerate(zip(feat_names_, xx2)):
-                print(this_x)
-                plt.annotate(
-                    this_name, xy=(this_x, acc + acc_offset),
-                    xycoords='data', rotation=90,
-                    verticalalignment='bottom' if jj % 2 else 'top',
-                    ha=annot_ha,
-                    fontsize=14)
-    plt.axvline(
-        -np.log10(0.05), color='red', linestyle='--', linewidth=3)
-    plt.annotate('p < 0.05', xy=(-np.log10(0.045), 0.03), color='red',
-                 fontsize=16)
-    plt.xlabel(r'significance [$-log_{10}(p)$]', fontsize=20, fontweight=150)
-    plt.ylabel(r'prediction [$R^2$]', fontsize=20, fontweight=150)
-    plt.ylim(0, 1)
-    plt.grid(True)
-    ax = plt.gca()
-    ax.set_yticks([0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1])
-    ax.set_yticks(np.arange(0.01, 1, 0.01), minor=True)
-    return fig
-
-
 def _get_data(case):
     if case == 'case1':
         bun = ds.load_diabetes()
@@ -152,6 +99,7 @@ def _get_data(case):
         df_part1.drop(labels='fev', axis=1, inplace=True)
         X = np.hstack((df_part1.values, df_part2.values))
         feat_names = list(df_part1.columns) + list(df_part2.columns)
+        feat_names = feat_names[:-1] + ['smoker']
     elif case == 'case4':
         df_birth = pd.read_csv('dataset_birthwt.csv')
         df_part1 = StandardScaler().fit_transform(df_birth[['age', 'lwt']])
@@ -163,7 +111,7 @@ def _get_data(case):
     return X, y, feat_names
 
 
-def _run_infpred(case, title):
+def _run_infpred(case):
     X, y, feat_names = _get_data(case)
 
     model = OLS(y, X)
@@ -179,21 +127,106 @@ def _run_infpred(case, title):
     coef_list, acc_list, nonzero_list, unbiased_acc_list =\
         compute_lasso_regpath(X, y, C_grid)
 
-    fig = _plot_infpred(unbiased_acc_list, lr_pvalues, coef_list, feat_names)
-    fig.suptitle(title,
-                 fontsize=24, fontweight=150)
-    fig.savefig('./figures/reg-%s.pdf' % case, bbox_inches='tight')
+    return unbiased_acc_list, lr_pvalues, coef_list, feat_names
 
 cases = [
-    ('case1', 'diabetes',
-     'Diabetes Data\nPredictive and some significant'),
+    ('case1', 'Birthweight',
+     'Birthweight Data\nsignificant, but hard to predict'),
     ('case2', 'prostata',
      'Prostata Data\nPredictive but not significant'),
-    ('case3', 'FEV',
-     'FEV Data\nsignificant but largely ignorable for prediction'),
-    ('case4', 'Birthweight',
-     'Birthweight Data\nsignificant, but hard to predict')
+    ('case3', 'diabetes',
+     'Diabetes Data\nPredictive and some significant'),
+    ('case4', 'FEV',
+     'FEV Data\nsignificant but largely\nignorable for prediction'),
 ]
 
-for case, key, title in cases:
-    _run_infpred(case, title)
+results = [_run_infpred(case) for case, _, _ in cases]
+
+
+def _plot_infpred(unbiased_acc_list, lr_pvalues, coef_list, feat_names,
+                  acc_offset=0.1, annot_ha='center', ax=None):
+    if ax is None:
+        fig = plt.figure(figsize=(9, 9))
+        ax = plt.gca()
+    else:
+        fig = None
+    sorter = unbiased_acc_list.argsort()[::-1]
+    colors = plt.cm.viridis_r(np.linspace(0.1, 0.9, len(sorter)))
+
+    unique_nonzero = {}
+    size = 20
+    for ii, idx in enumerate(sorter):
+        acc = unbiased_acc_list[idx]
+        non_zero = np.where(coef_list[idx])[0]
+        if tuple(non_zero) not in unique_nonzero:
+            unique_nonzero[tuple(non_zero)] = non_zero
+        else:
+            print('skipping', ii)
+            continue
+
+        xx = -np.log10(lr_pvalues[non_zero])
+        this_acc = np.array([acc] * len(xx))
+        size *= 0.9
+        ax.plot(xx + np.random.sample(len(xx)) * 0.01,
+                this_acc,
+                marker='o', linestyle='None',
+                color=colors[ii], zorder=-ii,
+                alpha=0.9,
+                mfc='None',
+                mew=1,
+                markersize=size)
+        if ii == 0:
+            psorter = np.argsort(lr_pvalues)
+            feat_names_ = [feat_names[kk] for kk in psorter]
+            xx2 = -np.log10(lr_pvalues[psorter])
+            for jj, (this_name, this_x) in enumerate(zip(feat_names_, xx2)):
+                print(this_x)
+                ax.annotate(
+                    this_name, xy=(
+                        this_x, acc + acc_offset + (0.1 if jj % 2 else 0)),
+                    xycoords='data', rotation=90,
+                    verticalalignment='bottom',
+                    ha=annot_ha,
+                    fontsize=10)
+
+    return fig
+
+
+plt.close('all')
+fig, axes = plt.subplots(1, 4, figsize=(18, 4), sharey=True)
+axes = axes.ravel()
+for ii, (case, key, title) in enumerate(cases):
+    ax = axes[ii]
+    unbiased_acc_list, lr_pvalues, coef_list, feat_names = results[ii]
+    acc_offset = 0.1
+    if case == 'case3':
+        acc_offset = -0.35
+
+    _plot_infpred(unbiased_acc_list, lr_pvalues, coef_list, feat_names,
+                  acc_offset, ax=ax)
+
+    ax.set_title(title,
+                 fontsize=12, fontweight=150)
+    ax.axvline(
+        -np.log10(0.05), color='red', linestyle='--', linewidth=3)
+    if case == 'case2':
+        ax.annotate('p < 0.05', xy=(0.75, 0.03), color='red',
+                    fontsize=14,)
+    else:
+        ax.annotate('p < 0.05', xy=(-np.log10(0.045), 0.03), color='red',
+                    fontsize=14,)
+    ax.set_xlabel(r'significance [$-log_{10}(p)$]', fontsize=14,
+                  fontweight=150)
+    if ii == 0:
+        ax.set_ylabel(r'prediction [$R^2$]', fontsize=14, fontweight=150)
+    ax.set_ylim(0, 1)
+    ax.grid(True)
+    ax.set_yticks([0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1])
+    ax.set_yticks(np.arange(0.01, 1, 0.01), minor=True)
+    ax.annotate(
+        'ABCD'[ii], xy=(-0.15, 1.05), fontweight=200, fontsize=30,
+        xycoords='axes fraction')
+plt.subplots_adjust(top=.83, bottom=0.15)
+
+fig.savefig('./figures/reg-cases.pdf', bbox_inches='tight')
+fig.savefig('./figures/reg-cases.png', bbox_inches='tight', dpi=300)

@@ -30,26 +30,25 @@ sns.set_style('ticks')
 plt.close('all')
 
 titles = [
+    'Sample size',
+    'Proportion relevant',
+    'Multi-collinearity',
+    'Corruption with noise',
     'True model or not',
     'Polynomial degree',
-    'Corruption with noise',
-    'Multi-collinearity',
-    'Sample size',
-    'Proportion relevant'
 ]
 
 cases = [
-    'model',
-    'poly',
-    'noise',
-    'correlation',
     'sample size',
-    'prop rel'
+    'prop rel',
+    'correlation',
+    'noise',
+    'model',
+    'poly'
 ]
 
 data_index = {
     'model': np.arange(len(df)),
-    # 'poly': df.model_violation.str.contains('\^').values,
     'poly': np.arange(len(df)),
     'noise': np.arange(len(df)),
     'correlation': np.arange(len(df)),
@@ -57,36 +56,9 @@ data_index = {
     'prop rel': np.arange(len(df)),
 }
 
-sample_ticks = [
-    50,
-    '',
-    '',
-    '',
-    '',
-    100,
-    '',
-    '',
-    '',
-    500,
-    '',
-    '',
-    800,
-    '',
-    1000,
-    '',
-    1200,
-    '',
-    1400,
-    1500,
-    1600,
-    1700,
-    1800,
-    1900,
-    2000,
-    10000,
-    100000
-]
-
+sample_ticks = [50, '', '', '', '', 100, '', '', '', 500, '', '', 800, '',
+                1000, '', 1200, '', 1400, 1500, 1600, 1700, 1800, 1900,
+                2000, 10000, 100000]
 
 plt.close('all')
 fig, axes = plt.subplots(2, 3, figsize=(9, 5), sharey=True)

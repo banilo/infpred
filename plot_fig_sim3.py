@@ -10,11 +10,13 @@ import seaborn as sns
 from mpl_toolkits.axes_grid.inset_locator import inset_axes
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-df = pd.read_pickle('./simulations.gzip')
+df = pd.read_pickle('./simulations_may.gzip')
 
 df.model_violation[df.model_violation.isnull()] = 'None'
 
 pvals = np.array([x for x in df['lr_pvalues'].values])
+pvals[pvals == np.finfo(pvals.dtype).eps] = 2.2250738585072014e-308
+pvals[pvals < 1e-300] = np.nan
 
 scores = np.array([x for x in df['scores_debiased'].values])
 
@@ -172,6 +174,10 @@ for i_case, case in enumerate(cases):
     if i_case in (0, 3):
         ax.set_ylabel(r'prediction [$R^2$]',
                       fontsize=12, fontweight=150)
+    ax.annotate(
+        'ABCDEFG'[i_case], xy=(-0.20, 0.99), fontweight=200, fontsize=20,
+        xycoords='axes fraction')
+
 
 plt.subplots_adjust(hspace=0.33, wspace=.46, left=.07, right=.94, top=.94,
                     bottom=.10)

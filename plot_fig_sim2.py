@@ -10,11 +10,14 @@ import seaborn as sns
 from mpl_toolkits.axes_grid.inset_locator import inset_axes
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-df = pd.read_pickle('./simulations.gzip')
+df = pd.read_pickle('./simulations_may.gzip')
 
 df.model_violation[df.model_violation.isnull()] = 'None'
 
+
 pvals = np.array([x for x in df['lr_pvalues'].values])
+pvals[pvals == np.finfo(pvals.dtype).eps] = 2.2250738585072014e-308
+pvals[pvals < 1e-300] = np.nan
 
 scores = np.array([x for x in df['scores_debiased'].values])
 
@@ -52,7 +55,7 @@ for ii, path in enumerate(pathologies):
 
     ax.grid(True)
     hb = ax.hexbin(x, y, gridsize=20,
-                   norm=plt.matplotlib.colors.Normalize(0, 100),
+                   norm=plt.matplotlib.colors.Normalize(0, 50),
                    mincnt=1,
                    cmap='viridis')
     if ii in [4, 9]:

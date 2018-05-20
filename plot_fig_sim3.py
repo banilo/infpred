@@ -57,6 +57,37 @@ data_index = {
     'prop rel': np.arange(len(df)),
 }
 
+sample_ticks = [
+    50,
+    '',
+    '',
+    '',
+    '',
+    100,
+    '',
+    '',
+    '',
+    500,
+    '',
+    '',
+    800,
+    '',
+    1000,
+    '',
+    1200,
+    '',
+    1400,
+    1500,
+    1600,
+    1700,
+    1800,
+    1900,
+    2000,
+    10000,
+    100000
+]
+
+
 plt.close('all')
 fig, axes = plt.subplots(2, 3, figsize=(9, 5), sharey=True)
 
@@ -123,10 +154,9 @@ for i_case, case in enumerate(cases):
     cb.draw_all()
     cax.yaxis.set_label_position('left')
     # if case == 'sample size':
-
     cb.set_ticklabels(
         unique_vals if case != 'sample size' else
-        [ll if ii % 2 else '' for ii, ll in enumerate(unique_vals)])
+        sample_ticks)
     if case == 'model':
         cb.set_ticklabels(['no', 'yes'])
 

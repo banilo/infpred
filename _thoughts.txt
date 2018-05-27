@@ -318,6 +318,64 @@ Suggestion for additional analysis: I would also add variables which do not belo
 
 
 
+Alex Koch:
+
+
+ich bin vor lauter Lehre und Betreuung leider erst jetzt dazu gekommen, euer durchaus interessantes Manuskript zu lesen. Hier kommen meine Kommentare:
+
+Gut Ding will Weile haben. Besten Dank, dass Du die Zeit gefunden hast, was uns Hilft die Zielleserschaft hoffentlich noch besser anzusprechen. Ich schreib unten mal meine ersten Associationen dazu, werd aber noch genauer drüber nachdenken.
+
+
+
+1. Das Dringlichste für mich ist: Es gibt doch auch bei der klassischen multiplen linearen Regression Indizes für aufgeklärte Kriteriumsvarianz im Sinne von Effektstärke, und zwar sowohl für einzelne Prädiktoren (quadriertes ß-Gewicht; zwar nur partielle aufgeklärte Kriteriumsvarianz aber anyway) als auch für das gesamte Modell (R²). Warum vergleicht ihr also den Signifikanzstatus der p-Werte in der klassischen multiplen linearen Regression mit aufgeklärter Kriteriumsvarianz in eurem ML-Ansatz? Wäre es nicht etwas weniger "Äpfel mit Birnen", wenn ihr out-of-sample aufgeklärte Kriteriumsvarianz der klassischen multiplen linearen Regression (z.B. Modelle mit ausschließlich in-sample signifikanten Prädiktoren) mit out-of-sample aufgeklärte Kriteriumsvarianz eures ML-Ansatzes (z.B. Modelle mit optimaler Balance zwischen Prädiktorensparsamkeit und aufgeklärter Kriteriumsvarianz) vergleichen würdet?  
+
+Unser Paper zielt für die Inferenzseite auf p-Werte ab, weil das das unumgänglichste und am meisten berichtete + intepretierte Maß im Kontext von Null-hypothesis statistical testing in den empirischen Wissenschaften ist. In Neuroimaging bspw. werden stets p-Werte berichtet, aber die anderen von Dir genannte Maße - beta squart etc. - leider vereinzelt oder nie.
+-> Wir vergleichen in ML und CS jeweils das typischste Maß um wichtige Befunde aus einem linearen Modell zu beschreiben
+
+Der große Unterschied ist, ob das Relevanmaß an Daten, an denen das Model auch gefittet wurde berechnet wird (fast immer in CS), oder an anderen Daten von der gleichen Grundverteilung (fast immer in ML). Daher hat R2 out of sample bei ML eine andere Bedeutung als die Effektstärkemaße aus der klassischen Statistik.
+
+
+2. Umgekehrt gedacht: Gibt es in eurem ML-Ansatz ein ungefähr vergleichbares Äquivalent für p-Werte in der klassischen multiplen linearen Regression?
+
+ML ist nicht dafür gemacht, genau Aussagen über einzuelne Koeffizienten zu machen, sondern um Aussagen über die Nützlichkeit von Koeffizientengruppen zu machen. Selbst bei linearen Modellen - wie bei uns hier - sind die Prediktor-weisen Koeffizienten weniger sicher, was eine Stärke der klassischen Verfahren ist.
+
+
+
+3. Ich finde beim klassischen Ansatz spannend, dass die Hinzunahme von immer mehr Prädiktoren die aufgeklärte Kriteriumsvarianz des Modells immer weiter steigert, während aus dem Grund immer größerer Überlappung bzw. Redundanz unter den Prädiktoren die Anzahl der signifikanten Prädiktoren weiter und weiter fallen sollte. Wenn ich mich nicht irre, liegt also ein Kompromiss vor den man finden muss zwischen was ihr "Prädikton" bezeichnet (R² des Modells) und was ihr "inference" bezeichnet (p < .05 einzelner Prädiktoren des Modells). Ich frage mich, ob das bei eurem ML-Ansatz auch zutrifft, und ob dieser Punkt nicht schon mehrfach woanders gemacht wurde?
+
+Dass die explained variance mit mehr Variablen tendenziell steigt, liegt an deren größeren degrees of freedom; führt aber auch dazu, dass linear-regression-type analyses mit sehr vielen prediktoren bekanntermaßen schwer interpretierbar werden und das Maß der explained variance (in-sample !) zunehmend seine Bedeutung verliert - die kann dann immer schlechter „verortet“ werden. Mit vielen Koeffizinenten kann man selbst mit einem linear Modell oft (zu) optimistische Ergebnisse erzielen.
+
+
+
+4. Übrigens: Was ihr "inference" nennt wäre für mich persönlich besser mit "explanation (of the underlying process)" beschrieben. Vielleicht müsste man den disclaimer hinzufügen, dass signifikante p-Werte dabei helfen, dem Prozess im Sinne von Verursachung des Kriteriums näher zu kommen. Definitive Aussagen über die Ursachen von was auch immer bzw. die Prozessvariblen, die man per Intervention manipulieren müsste, um etwas zu verhindern, abzulindern, zu verstärken, oder herbeizuführen, kann was ihr "inference" nennt meines Erachtens selten leisten, denn es müssten ja alle confounder, collider, und redundante Prädiktoren ausgeschlossen werden. Bei uns sind replizierbare Experimentalbefunde mit möglichst hoher Effektstärke die Utopie von "inference". Aber klar, man kann Leuten nicht ihre Blutwerte verändern, um dass zu prüfen wer Krebs bekommt. Bei Mäusen vielleicht…  
+
+Weder CS noch ML können kausalen Zusammenhängen auf die Schliche kommen (siehe Judea Pearl). CS klärt den zugrundeliegenden Prozesse aber oft besser auf weil alle relevanten Effekte gefunden werden sollen, während ML pragmatisch nur die Variablensets auswählt, die die Prädiktion auf neuen Daten verbessern. Siehe das Beispiel in Fig. 4 wo CS alle 4 richtigen Zusammenhänge mit Lungenvolumen findet, aber ML sich nur eine Variablen rauspickt und die anderen „substantitively relevant“ Einflüsse einfach ignoriert.
+
+„Inferenz“ und „Prediction“ werden in unserem Sinne seit Jahrzehten auch in dieser Form in der Wissenschaftsphilosophie diskutiert, siehe bspw. White 1971.
+
+
+
+5. Eure Simulation ist vielseitig und im wahrsten Sinne des Wortes großartig. Wieso stellt ihr dieser so kleine Patientenstichproben entgegen? Zumindest der Geburtsgewicht- und der Prostatakrebsdatensatz wirken zu? klein so direkt nach der Simulation. Habt ihr nicht Zugang zur UK Biobank und könntet aus dieser echte Riesendatensätze ziehen für eure Zwecke?
+
+
+Erstens, weil die meisten biomedizinischen Studien nach wie vor n < 100 haben und das damit in der Praxis der Regelfall ist.
+
+Zweitens, haben wir typische Datasets reanalyisert, die in Statistik-Lehrbüchern seit Jahren immer wieder durchgeackert wurden. Damit möchten wir zeigen, dass wir die Divergenz auf bekannten Datasets auch demonstrieren können.
+
+
+
+6. Für meinen Geschmack müsste in der Einleitung früher klar werden, was das Ziel eures Beitrags ist. Ich versuche, das immer im ersten Absatz klarzustellen und dann wie bei euch im Manuskript direkt vor dem Methodenteil zu wiederholen.
+
+Hmm, jetzt wo Du es sagst, sollten wir in den ersten Sätze wahrscheinlich schonmal die Paperintention ankündigen.
+
+
+
+7. Wie genau euer ML-Ansatz "LASSO" schätzt wird ML-Novizen wie mir nocht nicht so klar aus euren Zeilen. Und mach ein Leser wird sich fragen: Hängen die Schlussfolgerungen die ihr zieht von "LASSO" ab oder generalisieren sie auf andere ML-Ansätze?
+
+Der Kernstück und die Innovation zu früheren CS-ML Vergleichsversuchen liegt darin, dass wir auf beiden Seiten das jeweils typischste lineare Modell nehmen - multiple Regression versus das einfachste Prädiktionsmodel, das automatische Variablenselektion kann in ML. Da Prädiktions in ML das Hauptziel ist, verlässt man sich meist auf nicht-lineare Verfahren, was den explanation-fokussierten multiple regression models aber unfair gegenüber ist. Deshalb ist es besonders schwierig, CS und ML überhaupt irgendwie glaubhaft gegenüberzustellen.
+
+
+
 
 
 Applications:

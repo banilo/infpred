@@ -146,6 +146,9 @@ CAVEATS / COUNTER-ARGUMENTS:
 
 - your simulations are long-data scenarios that are not settings where we would naturally choose a Lasso -> not 100% naturalistic setting -> we chose 40 variables: this is the boundary were linear regression was still feasible and were advantages of penalized regression start to genau advnatage -> 40 input variables is a natural contact zone between classical statistics (exhaustive testing of all possible combinations) and ML + usual forward-stepwise does not work in 40 variables + we start from p=40 and n=50 which is very different from the pervasive long-data setting; 40 input variables is a natural contact zone between classical statistics and ML 
 
+-Linear regression and Lasso are not the same model !
+-> -Ghahramani: Models=representations of data; algorithms=target some type of learning such as finding optimal parameters, SGD and MCMC are not that different in this respect
+
 
 
 

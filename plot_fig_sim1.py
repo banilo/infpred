@@ -13,7 +13,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 df = pd.read_pickle('./simulations_may.gzip')
 df = df.iloc[1:]  # XXX fix with latest version
 
-df_ols = pd.read_pickle('./simulations_may_ols.gzip')
+#df_ols = pd.read_pickle('./simulations_may_ols.gzip')
+df_ols = pd.read_pickle('./simulations100k.gzip')
 
 df.model_violation[df.model_violation.isnull()] = 'None'
 
